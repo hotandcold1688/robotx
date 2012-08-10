@@ -3,6 +3,8 @@ package com.macyou.robot.index;
 import java.util.List;
 
 import org.apache.lucene.index.IndexWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.macyou.robot.common.Knowledge;
 
@@ -11,10 +13,11 @@ import com.macyou.robot.common.Knowledge;
  * 
  */
 public abstract class AbstractIndexBuilder implements IndexBuilder {
+	private static final Logger logger = LoggerFactory.getLogger(AbstractIndexBuilder.class);
 
-	IndexWriter writer;
+	protected IndexWriter writer;
 
-	Fetcher fetcher;
+	protected Fetcher fetcher;
 
 	@Override
 	public void buildIndex() {
@@ -31,12 +34,12 @@ public abstract class AbstractIndexBuilder implements IndexBuilder {
 			writer.close();
 
 		} catch (Exception e) {
-			e.printStackTrace(); //TODO: 
+			logger.error(e.getMessage(), e);
 		}
 	}
 
 	private void buildOnePage(List<Knowledge> list) {
-		for (Knowledge k : list) {
+		for (Knowledge k : list) { //TODO: NULL handling
 			buildOneDocument(k);
 		}
 	}
