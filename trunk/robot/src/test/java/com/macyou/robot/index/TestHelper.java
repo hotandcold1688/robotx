@@ -26,4 +26,13 @@ public class TestHelper {
 		searcher.close();
 		return doc;
 	}
+
+	public static int getSearchHits(String indexDir, String filed, String text) throws CorruptIndexException,
+			IOException {
+		Directory directory = FSDirectory.open(new File(indexDir));
+		IndexSearcher searcher = new IndexSearcher(IndexReader.open(directory));
+		Query query = new TermQuery(new Term(filed, text));
+		TopDocs docs = searcher.search(query, 2);
+		return docs.totalHits;
+	}
 }
