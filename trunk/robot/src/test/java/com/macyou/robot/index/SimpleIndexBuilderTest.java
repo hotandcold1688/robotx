@@ -26,7 +26,7 @@ public class SimpleIndexBuilderTest {
 	public void testFullBuild() throws Exception {
 		IndexBuilder builder = factory.getIndexBuilder(IndexType.FULL);
 		builder.buildIndex();
-		Document doc = TestHelper.searchFirstDoc(INDEX_DIR, FiledName.INDEX_ID, "1");
+		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, FiledName.INDEX_ID, "1");
 		Assert.assertEquals("a serach tool", doc.getFieldable(FiledName.ANSWER).stringValue());
 	}
 
@@ -60,7 +60,7 @@ public class SimpleIndexBuilderTest {
 		IndexBuilder increamentBuilder = factory.getIndexBuilder(IndexType.INCREMENT);
 		increamentBuilder.buildIndex();
 
-		Document doc = TestHelper.searchFirstDoc(INDEX_DIR, FiledName.INDEX_ID, "1");
+		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, FiledName.INDEX_ID, "1");
 		Assert.assertEquals("increment build", doc.getFieldable(FiledName.ANSWER).stringValue());
 
 	}
@@ -94,7 +94,7 @@ public class SimpleIndexBuilderTest {
 		IndexBuilder increamentBuilder = factory.getIndexBuilder(IndexType.INCREMENT);
 		increamentBuilder.buildIndex();
 
-		int hits = TestHelper.getSearchHits(INDEX_DIR, FiledName.INDEX_ID, "1");
+		int hits = SearchHelper.getSearchHits(INDEX_DIR, FiledName.INDEX_ID, "1");
 		Assert.assertEquals(0, hits);
 
 	}
