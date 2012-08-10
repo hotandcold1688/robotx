@@ -11,15 +11,17 @@ public class Knowledge extends Entity {
 	 * index's id
 	 */
 	private String indexId;
+	public static final String INDEX_ID = "INDEX_ID";
 	/**
 	 * question
 	 */
 	private String question;
+	public static final String QUESTION = "QUESTION";
 	/**
 	 * answer
 	 */
 	private String answer;
-
+	public static final String ANSWER = "ANSWER";
 
 	public String getIndexId() {
 		return indexId;

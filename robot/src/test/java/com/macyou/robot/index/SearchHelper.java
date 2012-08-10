@@ -14,7 +14,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-public class TestHelper {
+public class SearchHelper {
 
 	public static Document searchFirstDoc(String indexDir, String filed, String text) throws CorruptIndexException,
 			IOException {
