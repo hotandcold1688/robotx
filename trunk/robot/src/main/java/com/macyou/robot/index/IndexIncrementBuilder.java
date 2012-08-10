@@ -7,6 +7,7 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 
+import com.macyou.robot.common.DocumentHelper;
 import com.macyou.robot.common.FiledName;
 import com.macyou.robot.common.Knowledge;
 
