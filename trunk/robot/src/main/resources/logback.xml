@@ -10,6 +10,13 @@
 		</encoder>
 	</appender>
 
+    <category name="java.sql.PreparedStatement" additivity="false">
+   		<level value="DEBUG" />
+   		<appender-ref ref="STDOUT" />
+   	</category>
+
+    <logger name="java.sql.PreparedStatement" level="DEBUG"/>
+
 	<root level="debug">
 		<appender-ref ref="STDOUT" />
 	</root>
