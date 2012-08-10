@@ -1,10 +1,8 @@
-package com.macyou.robot.index;
+package com.macyou.robot.common;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
-import com.macyou.robot.common.FiledName;
-import com.macyou.robot.common.Knowledge;
 
 /**
  * 
