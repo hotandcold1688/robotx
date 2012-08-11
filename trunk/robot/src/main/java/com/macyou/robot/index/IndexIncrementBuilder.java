@@ -8,7 +8,6 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 
 import com.macyou.robot.common.DocumentHelper;
-import com.macyou.robot.common.FiledName;
 import com.macyou.robot.common.Knowledge;
 
 /**
@@ -29,7 +28,7 @@ public class IndexIncrementBuilder extends AbstractIndexBuilder {
 	protected void buildOneDocument(Knowledge knowledge) {
 		try {
 
-			Term term = new Term(FiledName.INDEX_ID, knowledge.getIndexId());
+			Term term = new Term(Knowledge.INDEX_ID, knowledge.getIndexId());
 			if (Y.equalsIgnoreCase(knowledge.getIsDeleted()))
 				writer.deleteDocuments(term);
 			else {

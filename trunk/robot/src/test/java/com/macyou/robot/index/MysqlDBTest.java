@@ -39,6 +39,10 @@ public class MysqlDBTest {
 		rs = ps.executeQuery();
 		rs.next();
 		Assert.assertEquals("123456", rs.getString("index_id"));
+		
+		rs.close();
+		ps.close();
+		conn.close();
 
 	}
 

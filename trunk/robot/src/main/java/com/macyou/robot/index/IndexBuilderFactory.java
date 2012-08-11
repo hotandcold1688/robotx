@@ -4,8 +4,8 @@ public interface IndexBuilderFactory {
 
 	public IndexBuilder getIndexBuilder(IndexType type) throws Exception;
 
+	static enum IndexType {
+		FULL, INCREMENT;
+	};
 }
 
-enum IndexType {
-	FULL, INCREMENT;
-};

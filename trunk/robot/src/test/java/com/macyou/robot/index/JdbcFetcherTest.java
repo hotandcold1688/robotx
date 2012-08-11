@@ -24,9 +24,5 @@ public class JdbcFetcherTest {
 		Assert.assertEquals(true, result);
 		List<Knowledge> list = jdbcFetcher.nextPage();
 		Assert.assertEquals(2, list.size());
-		for (Knowledge k : list) {
-			Assert.assertEquals(1, k.getId());
-		}
-		// Assert.assertEquals(true, jdbcFetcher.hasNext());
 	}
 }
