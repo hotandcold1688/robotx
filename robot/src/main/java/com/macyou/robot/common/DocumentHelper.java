@@ -3,7 +3,6 @@ package com.macyou.robot.common;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
-
 /**
  * 
  * 
@@ -14,10 +13,10 @@ public class DocumentHelper {
 
 	public static Document toDocument(Knowledge knowledge) {
 		Document doc = new Document();
-		doc.add(new Field(FiledName.INDEX_ID, String.valueOf(knowledge.getIndexId()), Field.Store.YES,
+		doc.add(new Field(Knowledge.INDEX_ID, String.valueOf(knowledge.getIndexId()), Field.Store.YES,
 				Field.Index.NOT_ANALYZED));
-		doc.add(new Field(FiledName.QUESTION, knowledge.getQuestion(), Field.Store.YES, Field.Index.ANALYZED));
-		doc.add(new Field(FiledName.ANSWER, knowledge.getAnswer(), Field.Store.YES, Field.Index.ANALYZED));
+		doc.add(new Field(Knowledge.QUESTION, knowledge.getQuestion(), Field.Store.YES, Field.Index.ANALYZED));
+		doc.add(new Field(Knowledge.ANSWER, knowledge.getAnswer(), Field.Store.YES, Field.Index.ANALYZED));
 		return doc;
 	}
 
