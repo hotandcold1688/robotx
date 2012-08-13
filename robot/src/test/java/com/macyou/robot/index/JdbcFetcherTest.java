@@ -11,6 +11,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.macyou.robot.common.Knowledge;
 
+/**
+ * shows spring-test usage
+ * 
+ * @author zili.dengzl	
+ * @time 2012-8-12 上午11:51:08
+ *
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "spring/datasource.xml", "spring/index.xml" })
 public class JdbcFetcherTest {
@@ -18,7 +25,7 @@ public class JdbcFetcherTest {
 	Fetcher jdbcFetcher;
 
 	@Test
-	public void test() {
+	public void testNextPage() {
 		jdbcFetcher.start();
 		boolean result = jdbcFetcher.hasNext();
 		Assert.assertEquals(true, result);
