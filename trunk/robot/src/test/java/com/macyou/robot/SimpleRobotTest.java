@@ -1,10 +1,8 @@
 package com.macyou.robot;
 
 import java.io.File;
-import java.io.FileReader;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.QueryParser;
@@ -16,6 +14,8 @@ import org.apache.lucene.store.FSDirectory;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.macyou.robot.common.Constants;
@@ -35,62 +35,61 @@ public class SimpleRobotTest {
 	static String INDEX_DIR = "target/lucene/index/SimpleRobotTest/";
 	static DefaultIndexBuilderFactory factory = new DefaultIndexBuilderFactory(INDEX_DIR);
 	static Analyzer analyzer;
+	static Robot simpleRobot;
 	//	static Analyzer analyzer = new IKAnalyzer();
 
 	@BeforeClass
 	//有对象初始化前运行一次的方法么(不要静态的)
 	public static void setUp() throws Exception {
-
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("/com/macyou/robot/index/spring/index.xml");
+		simpleRobot = (Robot) ctx.getBean("simpleRobot");
 		analyzer = new IKAnalyzer(true);
 		// analyzer = new IKAnalyzer();
-		//analyzer = new StandardAnalyzer(Constants.LUCENE_VERSION, new FileReader("target/classes/stopword.dic"));
+		// analyzer = new StandardAnalyzer(Constants.LUCENE_VERSION, new
+		// FileReader("target/classes/stopword.dic"));
 
 		factory.setAnalyzer(analyzer);
 		JavaFetcher fetcher = new JavaFetcher();
 		fetcher.setSource(TestData.knowledges);
 		factory.setFetcher(fetcher);
 
-		IndexBuilder builder = factory.getIndexBuilder(IndexBuilderFactory.IndexType.FULL);
+		IndexBuilder builder = factory
+				.getIndexBuilder(IndexBuilderFactory.IndexType.FULL);
 		builder.buildIndex();
 	}
-
+	
 	@Test
 	public void testAnswer() throws Exception {
-		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, "你好");
-		Assert.assertEquals("你好", doc.getFieldable(Knowledge.ANSWER).stringValue());
-
-		doc = SearchHelper.searchFirstDoc(INDEX_DIR, "你是谁");
-		Assert.assertEquals("我是机器人小邓", doc.getFieldable(Knowledge.ANSWER).stringValue());
-
-		doc = SearchHelper.searchFirstDoc(INDEX_DIR, "中国有多少个名族");
-		Assert.assertEquals("56个名族", doc.getFieldable(Knowledge.ANSWER).stringValue());
+		Assert.assertEquals("你好", simpleRobot.answer("你好", "test"));
+		Assert.assertEquals("我是机器人小邓", simpleRobot.answer("你是谁", "test"));
+		Assert.assertEquals("56个名族", simpleRobot.answer("中国有多少个名族", "test"));
 
 	}
+
 
 	@Test
 	public void testAnswer_samilarity1() throws Exception {
-		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, "你好吗？");
-		Assert.assertEquals("你好", doc.getFieldable(Knowledge.ANSWER).stringValue());
+		Assert.assertEquals("你好", simpleRobot.answer("你好吗？", "test"));
 	}
-
+	
 	@Test
 	public void testAnswer_samilarity2() throws Exception {
-		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, "你是谁啊？");
-		Assert.assertEquals("我是机器人小邓", doc.getFieldable(Knowledge.ANSWER).stringValue());
+		Assert.assertEquals("我是机器人小邓", simpleRobot.answer("你是谁啊？", "test"));
 	}
 
 	@Test
 	public void testAnswer_samilarity3() throws Exception {
-		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, "中国名族多少个");
-		Assert.assertEquals("56个名族", doc.getFieldable(Knowledge.ANSWER).stringValue());
-
+		Assert.assertEquals("56个名族", simpleRobot.answer("中国名族多少个", "test"));
 	}
 	
 	@Test
 	public void testAnswer_samilarity4() throws Exception {
-		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, "宇宙超级无敌美少女是谁");
-		Assert.assertEquals("凤姐", doc.getFieldable(Knowledge.ANSWER).stringValue());
-
+		Assert.assertEquals("凤姐", simpleRobot.answer("宇宙超级无敌美少女是谁", "test"));
+	}
+	
+	@Test
+	public void testAnswer_samilarity5() throws Exception {
+		Assert.assertEquals("对不起，没找到答案", simpleRobot.answer("BHB", "test"));
 	}
 
 	static class SearchHelper {
