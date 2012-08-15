@@ -47,6 +47,18 @@ public class SimpleRobot implements Robot{
 	public void setDefaultAnswerSearcher(AnswerSearcher defaultAnswerSearcher) {
 		this.defaultAnswerSearcher = defaultAnswerSearcher;
 	}
+
+	@Override
+	public String getRobotId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getIndexPath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
     
 }
