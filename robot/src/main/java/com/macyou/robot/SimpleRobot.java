@@ -1,15 +1,21 @@
 package com.macyou.robot;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.search.IndexSearcher;
+import org.wltea.analyzer.lucene.IKAnalyzer;
+
 import com.macyou.context.SearchContext;
 import com.macyou.exception.RobotCommonException;
 import com.macyou.robot.common.StringUtils;
-import com.macyou.robot.index.IndexDirFactory;
+import com.macyou.robot.index.IndexSearcherFactory;
 import com.macyou.search.AnswerSearcher;
 
 public class SimpleRobot implements Robot{
 	
-	private IndexDirFactory indexDirFactory;
+	private IndexSearcherFactory indexSearcherFactory;
 	private AnswerSearcher defaultAnswerSearcher;
+	private IndexSearcher searcher;
+	Analyzer analyzer  =   new  IKAnalyzer();   
 	
     public String answer(String question,String sceneId) throws Exception {
     	SearchContext context=prepareContext(question,sceneId);
@@ -24,16 +30,18 @@ public class SimpleRobot implements Robot{
     		throw new RobotCommonException("queryAnswer error,sceneId is null");
     	}
     	//获取索引地址
-    	String indexDir=indexDirFactory.getIndexDir(sceneId);
+    	searcher=indexSearcherFactory.getIndexSearcher(sceneId);
     	SearchContext context=new SearchContext();
     	context.setQuestion(question);
-    	context.setIndexDir(indexDir);
     	context.setRobotScene(sceneId);
+    	context.setSearcher(searcher);
+    	context.setAnalyzer(analyzer);
     	return context;	
     }
 
-	public void setIndexDirFactory(IndexDirFactory indexDirFactory) {
-		this.indexDirFactory = indexDirFactory;
+
+	public void setIndexSearcherFactory(IndexSearcherFactory indexSearcherFactory) {
+		this.indexSearcherFactory = indexSearcherFactory;
 	}
 
 	public void setDefaultAnswerSearcher(AnswerSearcher defaultAnswerSearcher) {

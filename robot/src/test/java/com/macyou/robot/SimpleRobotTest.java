@@ -41,8 +41,6 @@ public class SimpleRobotTest {
 	@BeforeClass
 	//有对象初始化前运行一次的方法么(不要静态的)
 	public static void setUp() throws Exception {
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("/com/macyou/robot/index/spring/index.xml");
-		simpleRobot = (Robot) ctx.getBean("simpleRobot");
 		analyzer = new IKAnalyzer(true);
 		// analyzer = new IKAnalyzer();
 		// analyzer = new StandardAnalyzer(Constants.LUCENE_VERSION, new
@@ -56,6 +54,8 @@ public class SimpleRobotTest {
 		IndexBuilder builder = factory
 				.getIndexBuilder(IndexBuilderFactory.IndexType.FULL);
 		builder.buildIndex();
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("/com/macyou/robot/index/spring/index.xml");
+		simpleRobot = (Robot) ctx.getBean("simpleRobot");
 	}
 	
 	@Test
