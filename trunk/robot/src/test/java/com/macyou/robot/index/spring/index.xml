@@ -10,7 +10,7 @@
 	default-autowire="byName">
 	
 	<bean id="jdbcFetcher" class="com.macyou.robot.index.JdbcFetcher"></bean>
-	<bean id="indexDirFactory" class="com.macyou.robot.index.DefaultIndexDirFactory"></bean>
+	<bean id="indexSearcherFactory" class="com.macyou.robot.index.DefaultIndexSearcherFactory" init-method="init"></bean>
 	<bean id="defaultAnswerSearcher" class="com.macyou.search.DefaultAnswerSearcher"></bean>
-    <bean id="simpleRobot" class="com.macyou.robot.SimpleRobot"></bean>
+    <bean id="simpleRobot" class="com.macyou.robot.SimpleRobot"  ></bean>
 </beans>
