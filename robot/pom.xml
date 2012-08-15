@@ -18,14 +18,14 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wltea.analyzer</groupId>
-            <artifactId>ik-analyzer</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.wltea.analyzer</groupId>
+			<artifactId>ik-analyzer</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -67,12 +67,8 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			 <groupId>javax.servlet</groupId>
-			 <artifactId>servlet-api</artifactId>
-        </dependency>
-        <dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all-server</artifactId>
 		</dependency>
 	</dependencies>
 </project>

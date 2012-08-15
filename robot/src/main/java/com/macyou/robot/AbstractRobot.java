@@ -8,6 +8,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TopFieldDocs;
 
 import com.macyou.context.SearchContext;
+import com.macyou.robot.common.PathHelper;
 import com.macyou.robot.config.RobotConfig;
 
 /**
@@ -17,21 +18,23 @@ import com.macyou.robot.config.RobotConfig;
  */
 public abstract class AbstractRobot implements Robot {
 
+	String id;
+
 	RobotConfig config;
-	
-//	SessionManager sessionManager;
+
+	// SessionManager sessionManager;
 
 	@Override
 	public String answer(String question, String sceneId) throws Exception {
-        //准备查询上下文，包括session的处理
+		// 准备查询上下文，包括session的处理
 		SearchContext context = prepareContext(question, sceneId);
 
-		//尝试从cache中获取结果
+		// 尝试从cache中获取结果
 		String answer = getAnswerFromCache(context);
 		if (answer != null) {
 			return answer;
 		}
-		//尝试通过indexId直接获取结果
+		// 尝试通过indexId直接获取结果
 		answer = getAnswerDirectlyIfPossible(context);
 		if (answer != null) {
 			return answer;
@@ -41,7 +44,7 @@ public abstract class AbstractRobot implements Robot {
 		// 获取filter
 		Filter filter = getFilter(context);
 		// 通过lucene搜索
-		TopFieldDocs docs = context.getSearcher().search(query, filter, 0, null);
+		TopFieldDocs docs = context.getSearcher().search(query, filter, config.getTopHitsNum(), config.getSort());
 		// 计算相似度,拼装结果
 		answer = getAnswer(docs);
 
@@ -90,5 +93,15 @@ public abstract class AbstractRobot implements Robot {
 	 * @return
 	 */
 	protected abstract SearchContext prepareContext(String question, String sceneId);
+
+	
+	
+	public String getRobotId() {
+		return id;
+	}
+
+	public String getIndexPath() {
+		return PathHelper.getIndexPath(id);
+	}
 
 }
