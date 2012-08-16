@@ -23,7 +23,7 @@ CREATE TABLE `robot_knowledge` (
   `question` varchar(4000) DEFAULT NULL,
   `answer` varchar(4000) DEFAULT NULL,
   `content_type` varchar(32) DEFAULT NULL,
-  `robot_id` varchar(256) DEFAULT NULL
+  `robot_id` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000000 DEFAULT CHARSET=utf8;
 
