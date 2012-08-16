@@ -18,22 +18,23 @@ import com.macyou.robot.common.Knowledge;
  */
 public class JdbcFetcher implements Fetcher {
 
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
-	SqlRowSet sqlRowSet;
-
-	/**
-	 * it indicate the current record is valid only, if totalSize can be MOD by pageSize, we will call nextPage one more
-	 * time and get nothing
-	 */
-	private boolean hasNext = true;
+	private SqlRowSet sqlRowSet;
 
 	private int pageSize = 20;
 
 	private String robotId;
 
+	/**
+	 * it indicate the current record is valid only, if totalSize can be MOD by pageSize, we will call nextPage one more
+	 * time and get nothing
+	 */
+	private boolean hasNext;
+
 	@Override
 	public void start() {
+		hasNext = true;
 		sqlRowSet = jdbcTemplate.queryForRowSet(getSql(), new Object[] { robotId });
 	}
 
@@ -51,6 +52,8 @@ public class JdbcFetcher implements Fetcher {
 	private Knowledge mapRow(SqlRowSet rs, int rowNum) {
 		Knowledge k = new Knowledge();
 		k.setId(rs.getLong(Knowledge.ID));
+		k.setGmtCreate(rs.getTimestamp(Knowledge.GMT_CREATE));
+		k.setGmtModified(rs.getTimestamp(Knowledge.GMT_MODIFIED));
 		k.setIsDeleted(rs.getString(Knowledge.IS_DELETED));
 		k.setIndexId(rs.getString(Knowledge.INDEX_ID));
 		k.setQuestion(rs.getString(Knowledge.QUESTION));
@@ -67,6 +70,7 @@ public class JdbcFetcher implements Fetcher {
 
 	@Override
 	public void end() {
+		sqlRowSet = null; //help gc, avoid rs is big
 	}
 
 	private String getSql() {

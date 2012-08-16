@@ -34,4 +34,12 @@ public class IndexManager {
 		}
 
 	}
+
+	public void setRobotManager(RobotManager robotManager) {
+		this.robotManager = robotManager;
+	}
+
+	public void setFetcher(Fetcher fetcher) {
+		this.fetcher = fetcher;
+	}
 }

@@ -17,6 +17,8 @@ import com.macyou.robot.common.Knowledge;
 /**
  * shows spring-test usage
  * 
+ * test fetch data from DB use jdbcTemplate of srping
+ * 
  * @author zili.dengzl
  * @time 2012-8-12 上午11:51:08
  * 
@@ -42,7 +44,7 @@ public class JdbcFetcherTest {
 		jdbcTemplate.update(deleteSql, new Object[] { TEST_ID[1] });
 		jdbcTemplate.update(deleteSql, new Object[] { TEST_ID[2] });
 
-		String insertSql = "insert into robot_knowledge (id,question,answer,content_type,robot_id) VALUES ( ? , 'is_ut_funny','no',?, ? )";
+		String insertSql = "insert into robot_knowledge (id,gmt_create, question,answer,content_type,robot_id) VALUES ( ? , sysdate(), 'is_ut_funny','no',?, ? )";
 		jdbcTemplate.update(insertSql, new Object[] { TEST_ID[0], CONTENT_TYPE.name(), ROBOT_ID });
 		jdbcTemplate.update(insertSql, new Object[] { TEST_ID[1], CONTENT_TYPE.name(), ROBOT_ID });
 		jdbcTemplate.update(insertSql, new Object[] { TEST_ID[2], CONTENT_TYPE.name(), ROBOT_ID });
@@ -53,7 +55,6 @@ public class JdbcFetcherTest {
 		//
 	}
 
-	
 	@Test
 	public void testNextPage_onePage() {
 		jdbcFetcher.setRobotId(ROBOT_ID);
@@ -66,13 +67,13 @@ public class JdbcFetcherTest {
 		Assert.assertEquals(CONTENT_TYPE, knowledge.getContentType());
 		Assert.assertEquals(ROBOT_ID, knowledge.getRobotId());
 	}
-	
+
 	@Test
 	public void testNextPage_multiPage() {
 		jdbcFetcher.setRobotId(ROBOT_ID);
 		jdbcFetcher.setPageSize(2);
 		jdbcFetcher.start();
-		
+
 		Assert.assertEquals(true, jdbcFetcher.hasNext());
 		List<Knowledge> list = jdbcFetcher.nextPage();
 		Assert.assertEquals(2, list.size());
