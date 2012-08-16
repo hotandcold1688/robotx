@@ -1,4 +1,4 @@
-package com.macyou.exception;
+package com.macyou.robot.exception;
 
 public class RobotCommonException extends RuntimeException {
 

@@ -1,62 +1,90 @@
 package com.macyou.robot;
 
+import java.io.File;
+
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TopFieldDocs;
+import org.apache.lucene.store.FSDirectory;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import com.macyou.context.SearchContext;
-import com.macyou.exception.RobotCommonException;
+import com.macyou.robot.common.Constants;
+import com.macyou.robot.common.Knowledge;
 import com.macyou.robot.common.StringUtils;
-import com.macyou.robot.index.IndexSearcherFactory;
-import com.macyou.search.AnswerSearcher;
+import com.macyou.robot.context.SearchContext;
+import com.macyou.robot.exception.RobotCommonException;
 
-public class SimpleRobot implements Robot {
-
-	private IndexSearcherFactory indexSearcherFactory;
-	private AnswerSearcher defaultAnswerSearcher;
+public class SimpleRobot extends AbstractRobot{
+	
 	private IndexSearcher searcher;
-	Analyzer analyzer = new IKAnalyzer();
-
-	public String answer(String question, String sceneId) throws Exception {
-		SearchContext context = prepareContext(question, sceneId);
-		return defaultAnswerSearcher.searchAnswer(context);
+	Analyzer analyzer  =   new  IKAnalyzer();   
+	
+    
+    public SearchContext prepareContext(String question,String sceneId) throws Exception{
+    	if(StringUtils.isEmpty(question)){
+    		throw new RobotCommonException("queryAnswer error,question is null");
+    	}
+    	if(StringUtils.isEmpty(sceneId)){
+    		throw new RobotCommonException("queryAnswer error,sceneId is null");
+    	}
+    	searcher=getSearcher();
+    	SearchContext context=new SearchContext();
+    	context.setQuestion(question);
+    	context.setRobotScene(sceneId);
+    	context.setSearcher(searcher);
+    	context.setAnalyzer(analyzer);
+    	return context;	
+    }
+    
+	public Query getQuery(SearchContext context) throws Exception {
+		Analyzer analyzer = context.getAnalyzer();
+		QueryParser parser = new QueryParser(Constants.LUCENE_VERSION,Knowledge.QUESTION, analyzer);
+		Query query = parser.parse(context.getQuestion());
+		return query;
 	}
-
-	private SearchContext prepareContext(String question, String sceneId) {
-		if (StringUtils.isEmpty(question)) {
-			throw new RobotCommonException("queryAnswer error,question is null");
+    
+    public String getAnswer(TopFieldDocs docs,IndexSearcher searcher) throws Exception {
+    	 if(docs.scoreDocs.length<1){
+         	return Constants.DEFAULT_ANSWER;
+         }
+ 		Document doc = searcher.doc(docs.scoreDocs[0].doc);
+ 		return  doc.getFieldable(Knowledge.ANSWER).stringValue();
+	}
+    
+    public IndexSearcher getSearcher() throws Exception{
+		return getOrCreateSearch();
+	}
+    
+	private synchronized IndexSearcher getOrCreateSearch() throws Exception {
+		if (searcher == null) {
+			searcher = new IndexSearcher(IndexReader.open(FSDirectory.open(new File(getIndexPath()))));
 		}
-		if (StringUtils.isEmpty(sceneId)) {
-			throw new RobotCommonException("queryAnswer error,sceneId is null");
-		}
-		//获取索引地址
-		searcher = indexSearcherFactory.getIndexSearcher(sceneId);
-		SearchContext context = new SearchContext();
-		context.setQuestion(question);
-		context.setRobotScene(sceneId);
-		context.setSearcher(searcher);
-		context.setAnalyzer(analyzer);
-		return context;
+		return searcher;
 	}
 
-	public void setIndexSearcherFactory(IndexSearcherFactory indexSearcherFactory) {
-		this.indexSearcherFactory = indexSearcherFactory;
-	}
-
-	public void setDefaultAnswerSearcher(AnswerSearcher defaultAnswerSearcher) {
-		this.defaultAnswerSearcher = defaultAnswerSearcher;
-	}
-
-	@Override
 	public String getRobotId() {
-		// TODO Auto-generated method stub
 		return "robot1";
 	}
 
-	@Override
 	public String getIndexPath() {
-		// TODO Auto-generated method stub
-		return "target/lucene/index/robot1/";
+		return "target/lucene/index/SimpleRobotTest/";
 	}
 
+	public String getAnswerDirectlyIfPossible(SearchContext context) {
+		return null;
+	}
+
+	public String getAnswerFromCache(SearchContext context) {
+		return null;
+	}
+
+	public Filter getFilter(SearchContext context) {
+		return null;
+	}
 }
+

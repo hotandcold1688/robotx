@@ -1,9 +1,7 @@
 package com.macyou.robot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,10 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  */
 public class RobotManager {
-	Map<String, Robot> robotMap = new ConcurrentHashMap<String, Robot>();
+	ConcurrentHashMap<String, Robot> robotMap;
 
 	public void init() {
-		createRobot("robot1", true);
+//		createRobot("robot1", true);
 	}
 
 	public List<Robot> listAllRobot() {
@@ -45,4 +43,10 @@ public class RobotManager {
 		}
 		return robot;
 	}
+
+	public void setRobotMap(ConcurrentHashMap<String, Robot> robotMap) {
+		this.robotMap = robotMap;
+	}
+	
+	
 }
