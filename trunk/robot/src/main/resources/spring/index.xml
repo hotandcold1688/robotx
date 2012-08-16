@@ -10,8 +10,10 @@
 
 
 	<bean id="simpleRobotConfig" class="com.macyou.robot.config.RobotConfig"></bean>
-	<bean id="simpleRobot" class="com.macyou.robot.SimpleRobot" init-method="start">
+	<bean id="simpleRobot" class="com.macyou.robot.SimpleRobot"
+		init-method="start">
 		<property name="config" ref="simpleRobotConfig" />
+		<property name="id" value="robot1" />
 	</bean>
 
 	<bean id="robotManager" class="com.macyou.robot.RobotManager"
@@ -25,6 +27,6 @@
 		</property>
 	</bean>
 
-	
+
 	<bean id="indexManager" class="com.macyou.robot.IndexManager" />
 </beans>

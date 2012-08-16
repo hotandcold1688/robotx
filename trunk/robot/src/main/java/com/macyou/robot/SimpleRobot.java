@@ -19,59 +19,35 @@ import com.macyou.robot.common.StringUtils;
 import com.macyou.robot.context.SearchContext;
 import com.macyou.robot.exception.RobotCommonException;
 
-public class SimpleRobot extends AbstractRobot{
-	
+public class SimpleRobot extends AbstractRobot {
 
-	Analyzer analyzer  =   new  IKAnalyzer();   
-	
-    public SearchContext prepareContext(String question,String sceneId) throws Exception{
-    	if(StringUtils.isEmpty(question)){
-    		throw new RobotCommonException("queryAnswer error,question is null");
-    	}
-    	if(StringUtils.isEmpty(sceneId)){
-    		throw new RobotCommonException("queryAnswer error,sceneId is null");
-    	}
-    	searcher=getSearcher();
-    	SearchContext context=new SearchContext();
-    	context.setQuestion(question);
-    	context.setRobotScene(sceneId);
-    	context.setSearcher(searcher);
-    	context.setAnalyzer(analyzer);
-    	return context;	
-    }
-    
+	Analyzer analyzer = new IKAnalyzer();
+
+	public SearchContext prepareContext(String question, String sceneId) throws Exception {
+		if (StringUtils.isEmpty(question)) {
+			throw new RobotCommonException("queryAnswer error,question is null");
+		}
+		if (StringUtils.isEmpty(sceneId)) {
+			throw new RobotCommonException("queryAnswer error,sceneId is null");
+		}
+		SearchContext context = new SearchContext();
+		context.setQuestion(question);
+		context.setRobotScene(sceneId);
+		return context;
+	}
+
 	public Query getQuery(SearchContext context) throws Exception {
-		Analyzer analyzer = context.getAnalyzer();
-		QueryParser parser = new QueryParser(Constants.LUCENE_VERSION,Knowledge.QUESTION, analyzer);
+		QueryParser parser = new QueryParser(Constants.LUCENE_VERSION, Knowledge.QUESTION, analyzer);
 		Query query = parser.parse(context.getQuestion());
 		return query;
 	}
-    
-    public String getAnswer(TopFieldDocs docs) throws Exception {
-    	 if(docs.scoreDocs.length<1){
-         	return Constants.DEFAULT_ANSWER;
-         }
- 		Document doc = searcher.doc(docs.scoreDocs[0].doc);
- 		return  doc.getFieldable(Knowledge.ANSWER).stringValue();
-	}
-    
-    public IndexSearcher getSearcher() throws Exception{
-		return getOrCreateSearch();
-	}
-    
-	private synchronized IndexSearcher getOrCreateSearch() throws Exception {
-		if (searcher == null) {
-			
+
+	public String getAnswer(TopFieldDocs docs) throws Exception {
+		if (docs.scoreDocs.length < 1) {
+			return Constants.DEFAULT_ANSWER;
 		}
-		return searcher;
-	}
-
-	public String getRobotId() {
-		return "robot1";
-	}
-
-	public String getIndexPath() {
-		return "target/lucene/index/SimpleRobotTest/";
+		Document doc = searcher.doc(docs.scoreDocs[0].doc);
+		return doc.getFieldable(Knowledge.ANSWER).stringValue();
 	}
 
 	public String getAnswerDirectlyIfPossible(SearchContext context) {
@@ -89,13 +65,12 @@ public class SimpleRobot extends AbstractRobot{
 	@Override
 	public void start() throws Exception {
 		searcher = new IndexSearcher(IndexReader.open(FSDirectory.open(new File(getIndexPath()))));
-		
+
 	}
 
 	@Override
 	public void stop() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
-

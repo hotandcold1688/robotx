@@ -7,9 +7,7 @@ public class SearchContext {
 
 	private String robotScene;
 	private String question;
-	private String indexDir;
-	private IndexSearcher searcher;
-	private Analyzer analyzer;   
+	private String indexDir;  
 	
 	public String getRobotScene() {
 		return robotScene;
@@ -29,17 +27,6 @@ public class SearchContext {
 	public void setIndexDir(String indexDir) {
 		this.indexDir = indexDir;
 	}
-	public IndexSearcher getSearcher() {
-		return searcher;
-	}
-	public void setSearcher(IndexSearcher searcher) {
-		this.searcher = searcher;
-	}
-	public Analyzer getAnalyzer() {
-		return analyzer;
-	}
-	public void setAnalyzer(Analyzer analyzer) {
-		this.analyzer = analyzer;
-	}
+
 	
 }

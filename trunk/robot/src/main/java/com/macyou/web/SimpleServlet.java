@@ -33,8 +33,8 @@ public class SimpleServlet extends HttpServlet {
 		indexManager = (IndexManager) ctx.getBean("indexManager");
 
 		//初始化index
-		//indexManager.fullBuildAllRobotIndex();
-		buildIndexInJava();
+		indexManager.fullBuildAllRobotIndex();
+		//buildIndexInJava();
 
 	}
 
@@ -62,7 +62,7 @@ public class SimpleServlet extends HttpServlet {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=GBK\"><title>chat-debug</title></head><body>");
 		sb.append("<form action=/ target=selfframe method=post />");
-		sb.append("scenceCode:<input name=robotId type=text maxLength=14 value=test style='width:100px' />");
+		sb.append("scenceCode:<input name=robotId type=text maxLength=14 value=robot1 style='width:100px' />");
 		sb.append("<br>问题：<input name=question type=text maxLength=25 style='width:450px' />");
 		sb.append("<input type=submit value='提交' /></br></form>");
 		sb.append("<iframe name='selfframe' src='about:blank' style='border:1px solid #ccc;width:680px;height:500px;overflow-x:break'></iframe>");
