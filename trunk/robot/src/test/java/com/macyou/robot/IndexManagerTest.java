@@ -3,8 +3,6 @@
  */
 package com.macyou.robot;
 
-import java.util.List;
-
 import mockit.Mock;
 import mockit.MockUp;
 
@@ -18,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.macyou.robot.common.DBTestBase;
 import com.macyou.robot.common.Knowledge;
-import com.macyou.robot.index.JavaFetcher;
 import com.macyou.robot.index.SearchHelper;
 
 /**
@@ -27,22 +24,27 @@ import com.macyou.robot.index.SearchHelper;
  * 
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "index/spring/index.xml" })
 public class IndexManagerTest extends DBTestBase {
 
-	String INDEX_DIR = "target/lucene/index/robot1/";
+	String INDEX_DIR = "target/lucene/index/IndexManagerTest/";
 
 	@Autowired
 	IndexManager indexManager;
 
 	@Test
+	@SuppressWarnings("unused")
 	public void tesFfullBuildAllRobotIndex() throws Exception {
 
-		new MockUp<SimpleRobot>() {
+		new MockUp<AbstractRobot>() {
 			@Mock
 			public String getRobotId() {
 				return ROBOT_ID;
+			}
+
+			@Mock
+			public String getIndexPath() {
+				return INDEX_DIR;
 			}
 		};
 		indexManager.fullBuildAllRobotIndex();

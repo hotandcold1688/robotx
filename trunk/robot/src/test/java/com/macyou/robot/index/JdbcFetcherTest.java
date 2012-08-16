@@ -25,11 +25,7 @@ import com.macyou.robot.common.Knowledge;
  * 
  */
 
-@ContextConfiguration(locations = { "spring/index.xml" })
 public class JdbcFetcherTest extends DBTestBase {
-
-	//	@Autowired
-	//	JdbcFetcher jdbcFetcher;
 
 	@Test
 	public void testNextPage_onePage() {

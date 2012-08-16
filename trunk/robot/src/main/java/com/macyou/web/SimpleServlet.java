@@ -34,9 +34,9 @@ public class SimpleServlet extends HttpServlet {
 
 		// 初始化index
 		indexManager.fullBuildAllRobotIndex();
-		//buildIndexInJava();
-		
-		//start
+		// buildIndexInJava();
+
+		// start
 		robotManager.start();
 	}
 
@@ -63,6 +63,15 @@ public class SimpleServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=GBK\"><title>chat-debug</title></head><body>");
+
+		String operation = req.getParameter("operation");
+		if (operation != null && operation.equals("buildIndex")) {
+			String robotId = req.getParameter("robotId");
+			Robot robot = robotManager.getRobot(robotId);
+			indexManager.fullBuildOneRobotIndex(robot);
+			sb.append("rebuild index!");
+		}
+
 		sb.append("<form action=/ target=selfframe method=post />");
 		sb.append("scenceCode:<input name=robotId type=text maxLength=14 value=robot1 style='width:100px' />");
 		sb.append("<br>问题：<input name=question type=text maxLength=25 style='width:450px' />");
@@ -82,11 +91,11 @@ public class SimpleServlet extends HttpServlet {
 		String robotId = req.getParameter("robotId");
 		PrintWriter out = res.getWriter();
 		try {
-			Robot robot = robotManager.getRobot("robot1");
+			Robot robot = robotManager.getRobot(robotId);
 			if (null == robot) {
 				// TODO: DEFALUT ROBOT
 			}
-			String answer = robot.answer(question, robotId);
+			String answer = robot.answer(question);
 			out.print(answer);
 		} catch (Exception e) {
 			out.print("error:");

@@ -3,10 +3,12 @@
  */
 package com.macyou.robot;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TopFieldDocs;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.macyou.robot.common.PathHelper;
 import com.macyou.robot.config.RobotConfig;
@@ -25,13 +27,15 @@ public abstract class AbstractRobot implements Robot, Lifecycle {
 	RobotConfig config;
 
 	protected IndexSearcher searcher;
+	
+	protected Analyzer analyzer = new IKAnalyzer();
 
 	// SessionManager sessionManager;
 
 	@Override
-	public String answer(String question, String sceneId) throws Exception {
+	public String answer(String question) throws Exception {
 		// 准备查询上下文，包括session的处理
-		SearchContext context = prepareContext(question, sceneId);
+		SearchContext context = prepareContext(question);
 
 		// 尝试从cache中获取结果
 		String answer = getAnswerFromCache(context);
@@ -96,7 +100,7 @@ public abstract class AbstractRobot implements Robot, Lifecycle {
 	 * @param sceneId
 	 * @return
 	 */
-	protected abstract SearchContext prepareContext(String question, String sceneId) throws Exception;
+	protected abstract SearchContext prepareContext(String question) throws Exception;
 
 	public String getRobotId() {
 		return id;
@@ -113,5 +117,22 @@ public abstract class AbstractRobot implements Robot, Lifecycle {
 	public void setConfig(RobotConfig config) {
 		this.config = config;
 	}
+
+	public IndexSearcher getSearcher() {
+		return searcher;
+	}
+
+	public void setSearcher(IndexSearcher searcher) {
+		this.searcher = searcher;
+	}
+
+	public Analyzer getAnalyzer() {
+		return analyzer;
+	}
+
+	public void setAnalyzer(Analyzer analyzer) {
+		this.analyzer = analyzer;
+	}
+	
 
 }
