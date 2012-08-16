@@ -21,10 +21,9 @@ import com.macyou.robot.exception.RobotCommonException;
 
 public class SimpleRobot extends AbstractRobot{
 	
-	private IndexSearcher searcher;
+
 	Analyzer analyzer  =   new  IKAnalyzer();   
 	
-    
     public SearchContext prepareContext(String question,String sceneId) throws Exception{
     	if(StringUtils.isEmpty(question)){
     		throw new RobotCommonException("queryAnswer error,question is null");
@@ -48,7 +47,7 @@ public class SimpleRobot extends AbstractRobot{
 		return query;
 	}
     
-    public String getAnswer(TopFieldDocs docs,IndexSearcher searcher) throws Exception {
+    public String getAnswer(TopFieldDocs docs) throws Exception {
     	 if(docs.scoreDocs.length<1){
          	return Constants.DEFAULT_ANSWER;
          }
@@ -62,7 +61,7 @@ public class SimpleRobot extends AbstractRobot{
     
 	private synchronized IndexSearcher getOrCreateSearch() throws Exception {
 		if (searcher == null) {
-			searcher = new IndexSearcher(IndexReader.open(FSDirectory.open(new File(getIndexPath()))));
+			
 		}
 		return searcher;
 	}
@@ -85,6 +84,18 @@ public class SimpleRobot extends AbstractRobot{
 
 	public Filter getFilter(SearchContext context) {
 		return null;
+	}
+
+	@Override
+	public void start() throws Exception {
+		searcher = new IndexSearcher(IndexReader.open(FSDirectory.open(new File(getIndexPath()))));
+		
+	}
+
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

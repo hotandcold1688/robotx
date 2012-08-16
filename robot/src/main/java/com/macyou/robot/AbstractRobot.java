@@ -11,17 +11,20 @@ import org.apache.lucene.search.TopFieldDocs;
 import com.macyou.robot.common.PathHelper;
 import com.macyou.robot.config.RobotConfig;
 import com.macyou.robot.context.SearchContext;
+import com.macyou.robot.lifecycle.Lifecycle;
 
 /**
  * @author zili.dengzl
  * @time 2012-8-15 下午4:41:55
  * 
  */
-public abstract class AbstractRobot implements Robot {
+public abstract class AbstractRobot implements Robot, Lifecycle {
 
 	String id;
 
 	RobotConfig config;
+	
+	protected IndexSearcher searcher;
 
 	// SessionManager sessionManager;
 
@@ -44,12 +47,10 @@ public abstract class AbstractRobot implements Robot {
 		Query query = getQuery(context);
 		// 获取filter
 		Filter filter = getFilter(context);
-		//获取searcher
-		IndexSearcher searcher=context.getSearcher();
 		// 通过lucene搜索
-		TopFieldDocs docs = searcher.search(query, filter, config.getTopHitsNum(), config.getSort());
+		TopFieldDocs docs = getSearcher().search(query, filter, config.getTopHitsNum(), config.getSort());
 		// 计算相似度,拼装结果
-		answer = getAnswer(docs,searcher);
+		answer = getAnswer(docs);
 
 		return answer;
 	}
@@ -74,7 +75,7 @@ public abstract class AbstractRobot implements Robot {
 	 * @param docs
 	 * @return
 	 */
-	protected abstract String getAnswer(TopFieldDocs docs,IndexSearcher searcher)throws Exception;
+	protected abstract String getAnswer(TopFieldDocs docs) throws Exception;
 
 	/**
 	 * @param context
@@ -96,14 +97,12 @@ public abstract class AbstractRobot implements Robot {
 	 * @return
 	 */
 	protected abstract SearchContext prepareContext(String question, String sceneId) throws Exception;
-	
+
 	/**
 	 * 获取searcher,一个机器人只初始化一次searcher
 	 */
-	protected abstract IndexSearcher getSearcher()throws Exception;
+	protected abstract IndexSearcher getSearcher() throws Exception;
 
-	
-	
 	public String getRobotId() {
 		return id;
 	}
@@ -120,5 +119,4 @@ public abstract class AbstractRobot implements Robot {
 		this.config = config;
 	}
 
-	
 }

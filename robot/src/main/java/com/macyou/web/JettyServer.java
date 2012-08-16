@@ -1,12 +1,8 @@
 package com.macyou.web;
 
-import javax.servlet.Servlet;
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author zili.dengzl
@@ -22,8 +18,8 @@ public class JettyServer {
 		context.setResourceBase(".");
 		server.setHandler(context);
 
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("/spring/index.xml");
-		context.addServlet(new ServletHolder((Servlet) ctx.getBean("simpleServlet")), "/");
+
+		context.addServlet(new ServletHolder(new SimpleServlet()), "/");
 		
 		server.start();
 		server.join();

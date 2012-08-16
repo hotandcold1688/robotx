@@ -8,29 +8,23 @@
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 	default-autowire="byName">
 
-	<bean id="jdbcFetcher" class="com.macyou.robot.index.JdbcFetcher" />
-	<!--<bean id="indexSearcherFactory" class="com.macyou.robot.index.DefaultIndexSearcherFactory" 
-		init-method="init"></bean> -->
+
 	<bean id="simpleRobotConfig" class="com.macyou.robot.config.RobotConfig"></bean>
-	<bean id="simpleRobot" class="com.macyou.robot.SimpleRobot">
-	   <property name="config" ref="simpleRobotConfig" />
+	<bean id="simpleRobot" class="com.macyou.robot.SimpleRobot" init-method="start">
+		<property name="config" ref="simpleRobotConfig" />
 	</bean>
 
-	<bean id="robotManager" class="com.macyou.robot.RobotManager" init-method="init">
-	  <property name="robotMap">
+	<bean id="robotManager" class="com.macyou.robot.RobotManager"
+		init-method="init">
+		<property name="robotMap">
 			<map>
 				<entry key="robot1">
-						<ref bean="simpleRobot" />
+					<ref bean="simpleRobot" />
 				</entry>
 			</map>
 		</property>
 	</bean>
+
 	
-	<bean id="indexManager" class="com.macyou.robot.IndexManager">
-		<property name="fetcher" ref="jdbcFetcher" />
-	</bean>
-	
-	<bean id="simpleServlet" class="com.macyou.web.SimpleServlet">
-	</bean>
-	
+	<bean id="indexManager" class="com.macyou.robot.IndexManager" />
 </beans>
