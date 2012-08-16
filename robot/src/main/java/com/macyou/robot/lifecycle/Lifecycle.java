@@ -6,7 +6,13 @@ package com.macyou.robot.lifecycle;
  * 
  */
 public interface Lifecycle {
-	void start() throws Exception;
+	/**
+	 * throw RuntimeException if necessary
+	 */
+	void start();
 
-	void stop() throws Exception;
+	/**
+	 * throw RuntimeException if necessary
+	 */
+	void stop();
 }

@@ -28,20 +28,22 @@ public class SimpleServlet extends HttpServlet {
 	private IndexManager indexManager;
 
 	public void init(ServletConfig config) throws ServletException {
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("/spring/index.xml");
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("/spring/robot.xml");
 		robotManager = (RobotManager) ctx.getBean("robotManager");
 		indexManager = (IndexManager) ctx.getBean("indexManager");
 
-		//初始化index
+		// 初始化index
 		indexManager.fullBuildAllRobotIndex();
 		//buildIndexInJava();
-
+		
+		//start
+		robotManager.start();
 	}
 
 	private void buildIndexInJava() {
-		String INDEX_DIR = "target/lucene/index/SimpleRobotTest/";
+		Robot robot = robotManager.getRobot("robot1");
 		Analyzer analyzer = new IKAnalyzer(true);
-		DefaultIndexBuilderFactory factory = new DefaultIndexBuilderFactory(INDEX_DIR);
+		DefaultIndexBuilderFactory factory = new DefaultIndexBuilderFactory(robot.getIndexPath());
 		factory.setAnalyzer(analyzer);
 		JavaFetcher fetcher = new JavaFetcher();
 		fetcher.setSource(SimpleData.knowledges);
@@ -82,7 +84,7 @@ public class SimpleServlet extends HttpServlet {
 		try {
 			Robot robot = robotManager.getRobot("robot1");
 			if (null == robot) {
-				//TODO: DEFALUT ROBOT
+				// TODO: DEFALUT ROBOT
 			}
 			String answer = robot.answer(question, robotId);
 			out.print(answer);

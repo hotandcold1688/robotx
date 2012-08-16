@@ -1,9 +1,11 @@
 package com.macyou.robot;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Filter;
@@ -63,9 +65,12 @@ public class SimpleRobot extends AbstractRobot {
 	}
 
 	@Override
-	public void start() throws Exception {
-		searcher = new IndexSearcher(IndexReader.open(FSDirectory.open(new File(getIndexPath()))));
-
+	public void start() {
+		try {
+			searcher = new IndexSearcher(IndexReader.open(FSDirectory.open(new File(getIndexPath()))));
+		} catch (Exception e) {
+			throw new RobotCommonException(e);
+		}
 	}
 
 	@Override

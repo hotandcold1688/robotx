@@ -15,6 +15,7 @@ import org.springframework.beans.factory.BeanFactoryAware;
 public class SpringBeanGetter implements BeanFactoryAware {
 	private static BeanFactory beanFactory;
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
