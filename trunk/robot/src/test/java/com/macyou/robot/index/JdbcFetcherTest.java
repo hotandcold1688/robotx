@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.macyou.robot.common.DBTestBase;
 import com.macyou.robot.common.Knowledge;
 
 /**
@@ -23,40 +24,16 @@ import com.macyou.robot.common.Knowledge;
  * @time 2012-8-12 上午11:51:08
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "spring/datasource.xml", "spring/index.xml" })
-public class JdbcFetcherTest {
 
-	private static final String[] TEST_ID = { "9999997", "9999998", "9999999" };
-	private static final Knowledge.ContentType CONTENT_TYPE = Knowledge.ContentType.text;
-	private static final String ROBOT_ID = "robot_jdbc_fetcher_test";
+@ContextConfiguration(locations = { "spring/index.xml" })
+public class JdbcFetcherTest extends DBTestBase {
 
-	@Autowired
-	JdbcTemplate jdbcTemplate;
-
-	@Autowired
-	JdbcFetcher jdbcFetcher;
-
-	@Before
-	public void setUp() {
-		String deleteSql = "delete from robot_knowledge where id = ? ";
-		jdbcTemplate.update(deleteSql, new Object[] { TEST_ID[0] });
-		jdbcTemplate.update(deleteSql, new Object[] { TEST_ID[1] });
-		jdbcTemplate.update(deleteSql, new Object[] { TEST_ID[2] });
-
-		String insertSql = "insert into robot_knowledge (id,gmt_create, question,answer,content_type,robot_id) VALUES ( ? , sysdate(), 'is_ut_funny','no',?, ? )";
-		jdbcTemplate.update(insertSql, new Object[] { TEST_ID[0], CONTENT_TYPE.name(), ROBOT_ID });
-		jdbcTemplate.update(insertSql, new Object[] { TEST_ID[1], CONTENT_TYPE.name(), ROBOT_ID });
-		jdbcTemplate.update(insertSql, new Object[] { TEST_ID[2], CONTENT_TYPE.name(), ROBOT_ID });
-	}
-
-	@After
-	public void tearDown() {
-		//
-	}
+	//	@Autowired
+	//	JdbcFetcher jdbcFetcher;
 
 	@Test
 	public void testNextPage_onePage() {
+		JdbcFetcher jdbcFetcher = new JdbcFetcher();
 		jdbcFetcher.setRobotId(ROBOT_ID);
 		jdbcFetcher.start();
 		Assert.assertEquals(true, jdbcFetcher.hasNext());
@@ -70,6 +47,7 @@ public class JdbcFetcherTest {
 
 	@Test
 	public void testNextPage_multiPage() {
+		JdbcFetcher jdbcFetcher = new JdbcFetcher();
 		jdbcFetcher.setRobotId(ROBOT_ID);
 		jdbcFetcher.setPageSize(2);
 		jdbcFetcher.start();

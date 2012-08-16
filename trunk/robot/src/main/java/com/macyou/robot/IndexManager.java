@@ -4,6 +4,7 @@ import com.macyou.robot.index.DefaultIndexBuilderFactory;
 import com.macyou.robot.index.Fetcher;
 import com.macyou.robot.index.IndexBuilder;
 import com.macyou.robot.index.IndexBuilderFactory;
+import com.macyou.robot.index.JdbcFetcher;
 
 /**
  * 被定时钟调用或者外部条件触发，进行某个(全部）机器人的全量(增量)的索引建立
@@ -13,7 +14,6 @@ import com.macyou.robot.index.IndexBuilderFactory;
  */
 public class IndexManager {
 	RobotManager robotManager;
-	Fetcher fetcher;
 
 	public void fullBuildAllRobotIndex() {
 		for (Robot robot : robotManager.listAllRobot()) {
@@ -24,6 +24,8 @@ public class IndexManager {
 	public void fullBuildOneRobotIndex(Robot robot) {
 		try {
 			IndexBuilderFactory factory = new DefaultIndexBuilderFactory(robot.getIndexPath());
+			JdbcFetcher fetcher = new JdbcFetcher();
+			fetcher.setRobotId(robot.getRobotId());
 			factory.setFetcher(fetcher);
 			IndexBuilder builder = factory.getIndexBuilder(IndexBuilderFactory.IndexType.FULL);
 			builder.buildIndex();
@@ -39,7 +41,4 @@ public class IndexManager {
 		this.robotManager = robotManager;
 	}
 
-	public void setFetcher(Fetcher fetcher) {
-		this.fetcher = fetcher;
-	}
 }

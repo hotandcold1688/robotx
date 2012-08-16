@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.macyou.robot.common.Knowledge;
+import com.macyou.robot.common.SpringBeanGetter;
 
 /**
  * fetch data from MYSQL DB
@@ -35,6 +36,7 @@ public class JdbcFetcher implements Fetcher {
 	@Override
 	public void start() {
 		hasNext = true;
+		jdbcTemplate = SpringBeanGetter.getBean("jdbcTemplate", JdbcTemplate.class);
 		sqlRowSet = jdbcTemplate.queryForRowSet(getSql(), new Object[] { robotId });
 	}
 
