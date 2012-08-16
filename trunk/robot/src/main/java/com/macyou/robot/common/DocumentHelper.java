@@ -23,4 +23,5 @@ public class DocumentHelper {
 	public static Knowledge fromDocument(Document document) {
 		return null;
 	}
+
 }
