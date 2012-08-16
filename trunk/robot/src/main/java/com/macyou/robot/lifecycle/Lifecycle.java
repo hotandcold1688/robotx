@@ -3,10 +3,10 @@ package com.macyou.robot.lifecycle;
 /**
  * 
  * @author zili.dengzl
- *
+ * 
  */
 public interface Lifecycle {
-	void start();
-	void stop();
-}
+	void start() throws Exception;
 
+	void stop() throws Exception;
+}
