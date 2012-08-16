@@ -22,6 +22,16 @@ public class Knowledge extends Entity {
 	 */
 	private String answer;
 	public static final String ANSWER = "answer";
+	/**
+	 * contentType, indicate the answer's contentType, such as text, html, or image
+	 */
+	private ContentType contentType;
+	public static final String CONTENT_TYPE = "content_type";
+	/**
+	 * robotId
+	 */
+	private String robotId;
+	public static final String ROBOT_ID = "robot_id";
 
 	public String getIndexId() {
 		return indexId;
@@ -45,6 +55,26 @@ public class Knowledge extends Entity {
 
 	public void setAnswer(String answer) {
 		this.answer = answer;
+	}
+
+	public ContentType getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(ContentType contentType) {
+		this.contentType = contentType;
+	}
+
+	public String getRobotId() {
+		return robotId;
+	}
+
+	public void setRobotId(String robotId) {
+		this.robotId = robotId;
+	}
+
+	public static enum ContentType {
+		text, html, jpg
 	}
 
 }

@@ -22,11 +22,13 @@ CREATE TABLE `robot_knowledge` (
   `index_id` varchar(128) DEFAULT NULL,
   `question` varchar(4000) DEFAULT NULL,
   `answer` varchar(4000) DEFAULT NULL,
+  `content_type` varchar(32) DEFAULT NULL,
+  `robot_id` varchar(256) DEFAULT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of robot_knowledge
 -- ----------------------------
-INSERT INTO `robot_knowledge` VALUES ('1', '2012-08-10 14:39:35', 'dzl', '2012-08-10 14:39:41', 'dzl', 'n', '1', '你是谁', '邓自立');
-INSERT INTO `robot_knowledge` VALUES ('9999999', null, null, null, null, null, '123456', null, null);
+INSERT INTO `robot_knowledge` VALUES ('1', '2012-08-10 14:39:35', 'dzl', '2012-08-10 14:39:41', 'dzl', 'n', '1', '你是谁', '邓自立','text','robot1');
+INSERT INTO `robot_knowledge` VALUES ('9999999', null, null, null, null, null, '123456', null, null,null,null);

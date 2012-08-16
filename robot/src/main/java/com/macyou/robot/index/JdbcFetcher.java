@@ -11,7 +11,7 @@ import com.macyou.robot.common.Knowledge;
 /**
  * fetch data from MYSQL DB
  * 
- * <b>NOT thread safe!</b>  
+ * <b>NOT thread safe!</b>
  * 
  * @author zili.dengzl
  * 
@@ -30,16 +30,18 @@ public class JdbcFetcher implements Fetcher {
 
 	private int pageSize = 20;
 
+	private String robotId;
+
 	@Override
 	public void start() {
-		sqlRowSet = jdbcTemplate.queryForRowSet(getSql(), new Object[] {});
+		sqlRowSet = jdbcTemplate.queryForRowSet(getSql(), new Object[] { robotId });
 	}
 
 	@Override
 	public List<Knowledge> nextPage() {
 		List<Knowledge> resultList = new ArrayList<Knowledge>();
 		int rowNum = 0;
-		while ((hasNext = sqlRowSet.next()) && rowNum < pageSize) {
+		while (rowNum < pageSize && (hasNext = sqlRowSet.next())) {
 			resultList.add(mapRow(sqlRowSet, rowNum));
 			rowNum++;
 		}
@@ -53,6 +55,8 @@ public class JdbcFetcher implements Fetcher {
 		k.setIndexId(rs.getString(Knowledge.INDEX_ID));
 		k.setQuestion(rs.getString(Knowledge.QUESTION));
 		k.setAnswer(rs.getString(Knowledge.ANSWER));
+		k.setContentType(Knowledge.ContentType.valueOf(rs.getString(Knowledge.CONTENT_TYPE)));
+		k.setRobotId(rs.getString(Knowledge.ROBOT_ID));
 		return k;
 	}
 
@@ -66,11 +70,19 @@ public class JdbcFetcher implements Fetcher {
 	}
 
 	private String getSql() {
-		return "select * from robot_knowledge";
+		return "select * from robot_knowledge where robot_id = ? order by id";
 	}
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	public void setRobotId(String robotId) {
+		this.robotId = robotId;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
 	}
 
 }
