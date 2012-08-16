@@ -1,4 +1,4 @@
-package com.macyou.context;
+package com.macyou.robot.context;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.IndexSearcher;

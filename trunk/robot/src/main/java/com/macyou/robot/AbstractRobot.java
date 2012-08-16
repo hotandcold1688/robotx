@@ -4,12 +4,13 @@
 package com.macyou.robot;
 
 import org.apache.lucene.search.Filter;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TopFieldDocs;
 
-import com.macyou.context.SearchContext;
 import com.macyou.robot.common.PathHelper;
 import com.macyou.robot.config.RobotConfig;
+import com.macyou.robot.context.SearchContext;
 
 /**
  * @author zili.dengzl
@@ -43,10 +44,12 @@ public abstract class AbstractRobot implements Robot {
 		Query query = getQuery(context);
 		// 获取filter
 		Filter filter = getFilter(context);
+		//获取searcher
+		IndexSearcher searcher=context.getSearcher();
 		// 通过lucene搜索
-		TopFieldDocs docs = context.getSearcher().search(query, filter, config.getTopHitsNum(), config.getSort());
+		TopFieldDocs docs = searcher.search(query, filter, config.getTopHitsNum(), config.getSort());
 		// 计算相似度,拼装结果
-		answer = getAnswer(docs);
+		answer = getAnswer(docs,searcher);
 
 		return answer;
 	}
@@ -71,7 +74,7 @@ public abstract class AbstractRobot implements Robot {
 	 * @param docs
 	 * @return
 	 */
-	protected abstract String getAnswer(TopFieldDocs docs);
+	protected abstract String getAnswer(TopFieldDocs docs,IndexSearcher searcher)throws Exception;
 
 	/**
 	 * @param context
@@ -83,7 +86,7 @@ public abstract class AbstractRobot implements Robot {
 	 * @param context
 	 * @return
 	 */
-	protected abstract Query getQuery(SearchContext context);
+	protected abstract Query getQuery(SearchContext context) throws Exception;
 
 	/**
 	 * 准备查询上下文，包括session的处理
@@ -92,7 +95,12 @@ public abstract class AbstractRobot implements Robot {
 	 * @param sceneId
 	 * @return
 	 */
-	protected abstract SearchContext prepareContext(String question, String sceneId);
+	protected abstract SearchContext prepareContext(String question, String sceneId) throws Exception;
+	
+	/**
+	 * 获取searcher,一个机器人只初始化一次searcher
+	 */
+	protected abstract IndexSearcher getSearcher()throws Exception;
 
 	
 	
@@ -104,4 +112,13 @@ public abstract class AbstractRobot implements Robot {
 		return PathHelper.getIndexPath(id);
 	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setConfig(RobotConfig config) {
+		this.config = config;
+	}
+
+	
 }
