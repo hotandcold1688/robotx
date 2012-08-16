@@ -10,6 +10,8 @@ import com.macyou.robot.lifecycle.Lifecycle;
 /**
  * robot 的初始化发生在服务启动，或者加入新的robot的时候,get的过程中不触发robot的初始化
  * 
+ * 1.robot的容器
+ * 2.调用robot的start
  * 
  * @author zili.dengzl
  * @time 2012-8-16 上午11:16:17

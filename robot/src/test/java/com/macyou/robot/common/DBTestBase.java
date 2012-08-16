@@ -10,8 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.macyou.robot.index.JdbcFetcher;
-
 /**
  * @author zili.dengzl
  * @time 2012-8-16 下午1:36:58

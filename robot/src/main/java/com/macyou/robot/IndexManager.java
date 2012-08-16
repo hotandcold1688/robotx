@@ -27,12 +27,13 @@ public class IndexManager {
 			JdbcFetcher fetcher = new JdbcFetcher();
 			fetcher.setRobotId(robot.getRobotId());
 			factory.setFetcher(fetcher);
+			factory.setAnalyzer(robot.getAnalyzer());
 			IndexBuilder builder = factory.getIndexBuilder(IndexBuilderFactory.IndexType.FULL);
 			builder.buildIndex();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			// TODO: CLOSE resources
+			// builder.close(); //TODO
 		}
 
 	}

@@ -1,11 +1,9 @@
 package com.macyou.robot;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Filter;
@@ -23,18 +21,16 @@ import com.macyou.robot.exception.RobotCommonException;
 
 public class SimpleRobot extends AbstractRobot {
 
-	Analyzer analyzer = new IKAnalyzer();
-
-	public SearchContext prepareContext(String question, String sceneId) throws Exception {
+	public SearchContext prepareContext(String question) throws Exception {
 		if (StringUtils.isEmpty(question)) {
 			throw new RobotCommonException("queryAnswer error,question is null");
 		}
-		if (StringUtils.isEmpty(sceneId)) {
-			throw new RobotCommonException("queryAnswer error,sceneId is null");
-		}
+//		if (StringUtils.isEmpty(robotId)) {
+//			throw new RobotCommonException("queryAnswer error,robotId is null");
+//		}
 		SearchContext context = new SearchContext();
 		context.setQuestion(question);
-		context.setRobotScene(sceneId);
+		// context.setRobotScene(robotId);
 		return context;
 	}
 
@@ -69,7 +65,7 @@ public class SimpleRobot extends AbstractRobot {
 		try {
 			searcher = new IndexSearcher(IndexReader.open(FSDirectory.open(new File(getIndexPath()))));
 		} catch (Exception e) {
-			throw new RobotCommonException(e);
+			throw new RobotCommonException("error while start", e);
 		}
 	}
 
