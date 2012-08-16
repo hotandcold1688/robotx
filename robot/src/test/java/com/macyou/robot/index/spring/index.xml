@@ -8,7 +8,8 @@
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 	default-autowire="byName">
 
-	<bean id="jdbcFetcher" class="com.macyou.robot.index.JdbcFetcher" />
+	<bean class="com.macyou.robot.common.SpringBeanGetter" />
+	<!-- <bean id="jdbcFetcher" class="com.macyou.robot.index.JdbcFetcher" /> -->
 	<!--<bean id="indexSearcherFactory" class="com.macyou.robot.index.DefaultIndexSearcherFactory" 
 		init-method="init"></bean> -->
 	<bean id="defaultAnswerSearcher" class="com.macyou.search.DefaultAnswerSearcher"></bean>
@@ -17,7 +18,6 @@
 	<bean id="robotManager" class="com.macyou.robot.RobotManager"
 		init-method="init" />
 	<bean id="indexManager" class="com.macyou.robot.IndexManager">
-		<property name="fetcher" ref="jdbcFetcher" />
 	</bean>
 
 </beans>

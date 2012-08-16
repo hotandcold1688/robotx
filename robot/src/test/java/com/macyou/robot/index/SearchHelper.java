@@ -16,12 +16,16 @@ import org.apache.lucene.store.FSDirectory;
 
 public class SearchHelper {
 
-	public static Document searchFirstDoc(String indexDir, String filed, String text) throws CorruptIndexException,
-			IOException {
+	public static Document searchFirstDoc(String indexDir, String filed, String text) throws Exception {
 		Directory directory = FSDirectory.open(new File(indexDir));
 		IndexSearcher searcher = new IndexSearcher(IndexReader.open(directory));
 		Query query = new TermQuery(new Term(filed, text));
 		TopDocs docs = searcher.search(query, 2);
+		
+		if (docs.totalHits == 0) {
+			throw new IllegalStateException("search hit 0 docs");
+		}
+		
 		Document doc = searcher.doc(docs.scoreDocs[0].doc);
 		searcher.close();
 		return doc;
