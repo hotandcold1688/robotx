@@ -12,7 +12,7 @@ public class PathHelper {
 	static Map<String, String> indexPathMap = new HashMap<String, String>();
 	static String DEFAULT_INDEX_DIR = "target/lucene/index/default/";
 	static {
-		indexPathMap.put("1", "target/lucene/index/robot1/");
+		indexPathMap.put("robot1", "target/lucene/index/robot2/");
 	}
 
 	public static String getIndexPath(String robotId) {

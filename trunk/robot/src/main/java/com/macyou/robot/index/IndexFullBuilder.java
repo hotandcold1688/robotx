@@ -1,8 +1,5 @@
 package com.macyou.robot.index;
 
-import java.io.IOException;
-
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
