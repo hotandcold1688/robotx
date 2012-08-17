@@ -8,7 +8,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
  * @author zili.dengzl
  *
  */
-public class JettyServer {
+public class JettyServletServer {
 	public static void main(String[] args) throws Exception {
 		Server server = new Server(8080);
 		//System.setProperty("org.eclipse.jetty.util.URI.charset", "UTF-8");

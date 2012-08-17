@@ -50,7 +50,7 @@ public class SimpleServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=GBK\"><title>chat-debug</title></head><body>");
-		sb.append("<form action=/ target=selfframe method=post />");
+		sb.append("<form action=/robot.htm target=selfframe method=post />");
 		sb.append("scenceCode:<input name=robotId type=text maxLength=14 value=robot1 style='width:100px' />");
 		sb.append("<br>问题：<input name=question type=text maxLength=25 style='width:450px' />");
 		sb.append("<input type=submit value='提交' /></br></form>");
