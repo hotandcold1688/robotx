@@ -3,8 +3,11 @@ package com.macyou.robot.index;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.util.Assert;
 
 import com.macyou.robot.common.Knowledge;
 import com.macyou.robot.common.SpringBeanGetter;
@@ -18,6 +21,7 @@ import com.macyou.robot.common.SpringBeanGetter;
  * 
  */
 public class JdbcFetcher implements Fetcher {
+	private static final Logger logger = LoggerFactory.getLogger(JdbcFetcher.class);
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -33,6 +37,14 @@ public class JdbcFetcher implements Fetcher {
 	 */
 	private boolean hasNext;
 
+	public JdbcFetcher(String robotId) {
+		super();
+		if (robotId == null) {
+			throw new IllegalArgumentException("robotId is null");
+		}
+		this.robotId = robotId;
+	}
+
 	@Override
 	public void start() {
 		hasNext = true;
@@ -45,8 +57,12 @@ public class JdbcFetcher implements Fetcher {
 		List<Knowledge> resultList = new ArrayList<Knowledge>();
 		int rowNum = 0;
 		while (rowNum < pageSize && (hasNext = sqlRowSet.next())) {
-			resultList.add(mapRow(sqlRowSet, rowNum));
-			rowNum++;
+			try {
+				resultList.add(mapRow(sqlRowSet, rowNum));
+				rowNum++;
+			} catch (Exception e) {
+				logger.warn("illgel record", e);
+			}
 		}
 		return resultList;
 	}
@@ -76,10 +92,6 @@ public class JdbcFetcher implements Fetcher {
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
-	}
-
-	public void setRobotId(String robotId) {
-		this.robotId = robotId;
 	}
 
 	public void setPageSize(int pageSize) {

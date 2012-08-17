@@ -39,9 +39,8 @@ public class RobotManager implements Lifecycle {
 		// TODO : get info from DB,reflect create robot
 		RobotConfig config = new RobotConfig();
 		config.setIndexPath(INDEX_DIR + robotId);
-		JavaFetcher fetcher = new JavaFetcher();
-		fetcher.setSource(SimpleData.knowledges);
-		//Fetcher fetcher = new JdbcFetcher();
+		JavaFetcher fetcher = new JavaFetcher(SimpleData.knowledges);
+		//Fetcher fetcher = new JdbcFetcher(robotId);
 		config.setFetcher(fetcher);
 		Robot robot = new SimpleRobot(config);
 		robot.start();

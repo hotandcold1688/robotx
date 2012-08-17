@@ -25,9 +25,11 @@ public class JavaFetcher implements Fetcher {
 
 	private int pageSize = 2;
 
-	@Override
-	public void start() {
-
+	public JavaFetcher(String[] source) {
+		super();
+		if (null != source) {
+			this.source = source;
+		}
 	}
 
 	@Override
@@ -54,15 +56,6 @@ public class JavaFetcher implements Fetcher {
 		return page * pageSize < source.length;
 	}
 
-
-	public String[] getSource() {
-		return source;
-	}
-
-	public void setSource(String[] source) {
-		this.source = source;
-	}
-
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -72,9 +65,14 @@ public class JavaFetcher implements Fetcher {
 	}
 
 	@Override
+	public void start() {
+
+	}
+
+	@Override
 	public void stop() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

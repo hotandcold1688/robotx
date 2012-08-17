@@ -33,8 +33,7 @@ public class SimpleRobotTest {
 	public static void setUp() throws Exception {
 		RobotConfig config = new RobotConfig();
 		config.setIndexPath(INDEX_DIR);
-		JavaFetcher fetcher = new JavaFetcher();
-		fetcher.setSource(TestData.knowledges);
+		JavaFetcher fetcher = new JavaFetcher(TestData.knowledges);
 		config.setFetcher(fetcher);
 
 		simpleRobot = new SimpleRobot(config);

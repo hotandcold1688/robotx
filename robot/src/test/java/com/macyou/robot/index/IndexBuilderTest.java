@@ -33,7 +33,7 @@ public class IndexBuilderTest {
 			IndexWriterConfig indexConfig = new IndexWriterConfig(Constants.LUCENE_VERSION, analyzer);
 			indexConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);// recreate every time;
 			File indexDir = new File(INDEX_DIR);
-			Fetcher fetcher = new JavaFetcher();
+			Fetcher fetcher = new JavaFetcher(null);
 			IndexWriter writer = new IndexWriter(FSDirectory.open(indexDir), indexConfig);
 			indexBuilder = new DefaultIndexBuilder(writer, fetcher);
 		} catch (Exception e) {
@@ -47,7 +47,7 @@ public class IndexBuilderTest {
 		indexBuilder.fullBuildIndex();
 		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, Knowledge.INDEX_ID, "1");
 		Assert.assertEquals("a serach tool", doc.getFieldable(Knowledge.ANSWER).stringValue());
-		//indexBuilder.stop();
+		// indexBuilder.stop();
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class IndexBuilderTest {
 		indexBuilder.incrementBuildIndex();
 		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, Knowledge.INDEX_ID, "1");
 		Assert.assertEquals("increment build", doc.getFieldable(Knowledge.ANSWER).stringValue());
-		//indexBuilder.stop();
+		// indexBuilder.stop();
 	}
 
 	@Test
