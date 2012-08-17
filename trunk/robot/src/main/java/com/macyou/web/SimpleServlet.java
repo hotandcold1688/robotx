@@ -20,7 +20,7 @@ public class SimpleServlet extends HttpServlet {
 	private RobotManager robotManager;
 
 	public void init(ServletConfig config) throws ServletException {
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("/spring/robot.xml");
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("webroot/WEB-INF/spring/robot.xml");
 
 		robotManager = new RobotManager();
 		// start

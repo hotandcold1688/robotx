@@ -11,7 +11,7 @@ public class JettyWebServer {
 
 		WebAppContext webapp = new WebAppContext();
 		webapp.setDescriptor(baseDir + "/WEB-INF/web.xml");
-		webapp.setResourceBase(baseDir + "/vm");
+		webapp.setResourceBase(baseDir );
 		// webapp.setDefaultsDescriptor(baseDir+"WEB-INF/webdefault.xml");
 		webapp.setContextPath("/");
 
