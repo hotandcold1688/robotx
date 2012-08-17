@@ -24,7 +24,7 @@ import com.macyou.robot.common.Knowledge;
  * @time 2012-8-12 上午11:51:08
  * 
  */
-
+@ContextConfiguration(locations = { "spring/index.xml" })
 public class JdbcFetcherTest extends DBTestBase {
 
 	@Test
