@@ -34,7 +34,7 @@ public class IndexWriterTest {
 		IndexWriter writer = new IndexWriter(dir, config);
 		// IndexReader reader = IndexReader.open(writer, false);
 		// IndexSearcher searcher = new IndexSearcher(reader);
-		IndexSearcher searcher = new IndexSearcher(IndexReader.open(dir));
+	
 
 		Document doc = new Document();
 		doc.add(new Field("id", "1", Field.Store.YES, Field.Index.NOT_ANALYZED));
@@ -49,11 +49,12 @@ public class IndexWriterTest {
 		writer.addDocument(doc);
 		writer.commit();
 		writer.close();
-
+		
+		IndexSearcher searcher = new IndexSearcher(IndexReader.open(dir));
 		Query query = new TermQuery(new Term("id", "1"));
 		TopDocs docs = searcher.search(query, 10);
 		Document ret = searcher.doc(docs.scoreDocs[0].doc);
-		Assert.assertEquals("test2", ret.getFieldable("content").stringValue());
+		Assert.assertEquals("test1", ret.getFieldable("content").stringValue());
 
 	}
 }
