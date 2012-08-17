@@ -13,16 +13,17 @@
 		<servlet-name>simpleRobot</servlet-name>
 		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>springWeb</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springWeb</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
 
-	<!--
-		<servlet>
-			<servlet-name>spring</servlet-name>
-			<servlet-class>simple.servlet.spring.SpringServlet</servlet-class>
-		</servlet>
 
-		<servlet-mapping>
-			<servlet-name>spring</servlet-name>
-			<url-pattern>*.do</url-pattern>
-		</servlet-mapping>-->
 
 </web-app>
