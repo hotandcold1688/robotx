@@ -2,10 +2,6 @@ package com.macyou.robot;
 
 import java.io.File;
 
-import mockit.Mock;
-import mockit.MockUp;
-
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.QueryParser;
@@ -17,14 +13,10 @@ import org.apache.lucene.store.FSDirectory;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.macyou.robot.common.Constants;
 import com.macyou.robot.common.Knowledge;
 import com.macyou.robot.config.RobotConfig;
-import com.macyou.robot.index.DefaultIndexBuilderFactory;
-import com.macyou.robot.index.IndexBuilder;
-import com.macyou.robot.index.IndexBuilderFactory;
 import com.macyou.robot.index.JavaFetcher;
 
 /**
@@ -33,35 +25,19 @@ import com.macyou.robot.index.JavaFetcher;
  * 
  */
 public class SimpleRobotTest {
-
 	static String INDEX_DIR = "target/lucene/index/SimpleRobotTest/";
-	static Analyzer analyzer;
 	static SimpleRobot simpleRobot;
-
-	// static Analyzer analyzer = new IKAnalyzer();
 
 	@BeforeClass
 	// 有对象初始化前运行一次的方法么(不要静态的)
 	public static void setUp() throws Exception {
-		//build index
-		DefaultIndexBuilderFactory factory = new DefaultIndexBuilderFactory(INDEX_DIR);
-		analyzer = new IKAnalyzer(true);
-		factory.setAnalyzer(analyzer);
+		RobotConfig config = new RobotConfig();
+		config.setIndexPath(INDEX_DIR);
 		JavaFetcher fetcher = new JavaFetcher();
 		fetcher.setSource(TestData.knowledges);
-		factory.setFetcher(fetcher);
-		IndexBuilder builder = factory.getIndexBuilder(IndexBuilderFactory.IndexType.FULL);
-		builder.buildIndex();
+		config.setFetcher(fetcher);
 
-		//create and start robot
-		new MockUp<AbstractRobot>() {
-			@Mock
-			public String getIndexPath() {
-				return INDEX_DIR;
-			}
-		};
-		simpleRobot = new SimpleRobot();
-		simpleRobot.setConfig(new RobotConfig());
+		simpleRobot = new SimpleRobot(config);
 		simpleRobot.start();
 	}
 
@@ -110,7 +86,8 @@ public class SimpleRobotTest {
 			IndexSearcher searcher = new IndexSearcher(IndexReader.open(directory));
 
 			// Analyzer analyzer = new IKAnalyzer(true);
-			QueryParser parser = new QueryParser(Constants.LUCENE_VERSION, Knowledge.QUESTION, analyzer);
+			QueryParser parser = new QueryParser(Constants.LUCENE_VERSION, Knowledge.QUESTION,
+					simpleRobot.getAnalyzer());
 			Query query = parser.parse(text);
 
 			TopDocs docs = searcher.search(query, 1);

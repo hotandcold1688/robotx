@@ -33,6 +33,6 @@ public interface Fetcher {
     /**
      * 
      */
-    void end();
+    void stop();
     
 }

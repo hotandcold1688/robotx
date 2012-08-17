@@ -9,52 +9,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import com.macyou.robot.IndexManager;
 import com.macyou.robot.Robot;
 import com.macyou.robot.RobotManager;
-import com.macyou.robot.index.DefaultIndexBuilderFactory;
-import com.macyou.robot.index.IndexBuilder;
-import com.macyou.robot.index.IndexBuilderFactory;
-import com.macyou.robot.index.JavaFetcher;
 
 public class SimpleServlet extends HttpServlet {
 	private static final long serialVersionUID = 3290498972143257177L;
 	private RobotManager robotManager;
-	private IndexManager indexManager;
 
 	public void init(ServletConfig config) throws ServletException {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("/spring/robot.xml");
-		robotManager = (RobotManager) ctx.getBean("robotManager");
-		indexManager = (IndexManager) ctx.getBean("indexManager");
 
-		// 初始化index
-		indexManager.fullBuildAllRobotIndex();
-		// buildIndexInJava();
-
+		robotManager = new RobotManager();
 		// start
-		robotManager.start();
+		robotManager.createRobot("robot1");
 	}
 
-	private void buildIndexInJava() {
-		Robot robot = robotManager.getRobot("robot1");
-		Analyzer analyzer = new IKAnalyzer(true);
-		DefaultIndexBuilderFactory factory = new DefaultIndexBuilderFactory(robot.getIndexPath());
-		factory.setAnalyzer(analyzer);
-		JavaFetcher fetcher = new JavaFetcher();
-		fetcher.setSource(SimpleData.knowledges);
-		factory.setFetcher(fetcher);
-		IndexBuilder builder;
-		try {
-			builder = factory.getIndexBuilder(IndexBuilderFactory.IndexType.FULL);
-			builder.buildIndex();
-		} catch (Exception e) {
-		}
-	}
+	// private void buildIndexInJava() {
+	// Robot robot = robotManager.getRobot("robot1");
+	// Analyzer analyzer = new IKAnalyzer(true);
+	// DefaultIndexBuilderFactory factory = new DefaultIndexBuilderFactory(robot.getIndexPath());
+	// factory.setAnalyzer(analyzer);
+	// JavaFetcher fetcher = new JavaFetcher();
+	// fetcher.setSource(SimpleData.knowledges);
+	// factory.setFetcher(fetcher);
+	// IndexBuilder builder;
+	// try {
+	// builder = factory.getIndexBuilder(IndexBuilderFactory.IndexType.FULL);
+	// builder.buildIndex();
+	// } catch (Exception e) {
+	// }
+	// }
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setContentType("text/html; charset=GBK");
@@ -63,15 +50,6 @@ public class SimpleServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=GBK\"><title>chat-debug</title></head><body>");
-
-		String operation = req.getParameter("operation");
-		if (operation != null && operation.equals("buildIndex")) {
-			String robotId = req.getParameter("robotId");
-			Robot robot = robotManager.getRobot(robotId);
-			indexManager.fullBuildOneRobotIndex(robot);
-			sb.append("rebuild index!");
-		}
-
 		sb.append("<form action=/ target=selfframe method=post />");
 		sb.append("scenceCode:<input name=robotId type=text maxLength=14 value=robot1 style='width:100px' />");
 		sb.append("<br>问题：<input name=question type=text maxLength=25 style='width:450px' />");

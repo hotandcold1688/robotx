@@ -9,22 +9,4 @@
 	default-autowire="byName">
 
 	<bean class="com.macyou.robot.common.SpringBeanGetter"></bean>
-	<bean id="simpleRobotConfig" class="com.macyou.robot.config.RobotConfig"></bean>
-	<bean id="simpleRobot" class="com.macyou.robot.SimpleRobot">
-		<property name="config" ref="simpleRobotConfig" />
-		<property name="id" value="robot1" />
-	</bean>
-
-	<bean id="robotManager" class="com.macyou.robot.RobotManager">
-		<property name="robotMap">
-			<map>
-				<entry key="robot1">
-					<ref bean="simpleRobot" />
-				</entry>
-			</map>
-		</property>
-	</bean>
-
-
-	<bean id="indexManager" class="com.macyou.robot.IndexManager" />
 </beans>
