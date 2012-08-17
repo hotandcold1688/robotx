@@ -3,6 +3,7 @@ package com.macyou.robot.index;
 import java.util.List;
 
 import com.macyou.robot.common.Knowledge;
+import com.macyou.robot.lifecycle.Lifecycle;
 
 /**
  * 
@@ -11,12 +12,8 @@ import com.macyou.robot.common.Knowledge;
  * @author zili.dengzl
  *
  */
-public interface Fetcher {
+public interface Fetcher extends Lifecycle {
 
-    /**
-     * 
-     */
-    void start();
 
     /**
      * @return
@@ -29,10 +26,6 @@ public interface Fetcher {
      */
     boolean hasNext();
     
-  
-    /**
-     * 
-     */
-    void stop();
+ 
     
 }

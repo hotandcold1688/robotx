@@ -2,15 +2,9 @@ package com.macyou.robot.index;
 
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.macyou.robot.common.DBTestBase;
 import com.macyou.robot.common.Knowledge;
@@ -18,7 +12,7 @@ import com.macyou.robot.common.Knowledge;
 /**
  * shows spring-test usage
  * 
- * test fetch data from DB use jdbcTemplate of srping
+ * test fetch data from DB use jdbcTemplate of spring
  * 
  * @author zili.dengzl
  * @time 2012-8-12 上午11:51:08
@@ -29,8 +23,7 @@ public class JdbcFetcherTest extends DBTestBase {
 
 	@Test
 	public void testNextPage_onePage() {
-		JdbcFetcher jdbcFetcher = new JdbcFetcher();
-		jdbcFetcher.setRobotId(ROBOT_ID);
+		JdbcFetcher jdbcFetcher = new JdbcFetcher(ROBOT_ID);
 		jdbcFetcher.start();
 		Assert.assertEquals(true, jdbcFetcher.hasNext());
 		List<Knowledge> list = jdbcFetcher.nextPage();
@@ -43,8 +36,7 @@ public class JdbcFetcherTest extends DBTestBase {
 
 	@Test
 	public void testNextPage_multiPage() {
-		JdbcFetcher jdbcFetcher = new JdbcFetcher();
-		jdbcFetcher.setRobotId(ROBOT_ID);
+		JdbcFetcher jdbcFetcher = new JdbcFetcher(ROBOT_ID);
 		jdbcFetcher.setPageSize(2);
 		jdbcFetcher.start();
 
@@ -59,5 +51,10 @@ public class JdbcFetcherTest extends DBTestBase {
 		Assert.assertEquals(TEST_ID[2], String.valueOf(list.get(0).getId()));
 		Assert.assertEquals(false, jdbcFetcher.hasNext());
 
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testNextPage_nullRobotId() {
+		new JdbcFetcher(null);
 	}
 }
