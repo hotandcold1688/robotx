@@ -25,7 +25,7 @@ CREATE TABLE `robot_knowledge` (
   `content_type` varchar(32) DEFAULT NULL,
   `robot_id` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of robot_knowledge
