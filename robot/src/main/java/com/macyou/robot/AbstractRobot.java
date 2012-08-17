@@ -3,34 +3,55 @@
  */
 package com.macyou.robot;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TopFieldDocs;
+import org.apache.lucene.store.FSDirectory;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import com.macyou.robot.common.PathHelper;
+import com.macyou.robot.common.Constants;
 import com.macyou.robot.config.RobotConfig;
 import com.macyou.robot.context.SearchContext;
-import com.macyou.robot.lifecycle.Lifecycle;
+import com.macyou.robot.exception.RobotCommonException;
+import com.macyou.robot.index.DefaultIndexBuilder;
+import com.macyou.robot.index.IndexBuilder;
+import com.macyou.robot.session.SessionManager;
 
 /**
  * @author zili.dengzl
  * @time 2012-8-15 下午4:41:55
  * 
  */
-public abstract class AbstractRobot implements Robot, Lifecycle {
+public abstract class AbstractRobot implements Robot {
 
-	String id;
+	/**
+	 * robotId
+	 */
+	protected String id;
 
-	RobotConfig config;
+	protected RobotConfig config;
 
 	protected IndexSearcher searcher;
-	
-	protected Analyzer analyzer = new IKAnalyzer();
 
-	// SessionManager sessionManager;
+	protected Analyzer analyzer;
+
+	protected IndexBuilder indexBuilder;
+
+	protected SessionManager sessionManager;
+
+	public AbstractRobot(RobotConfig config) {
+		super();
+		this.config = config;
+	}
 
 	@Override
 	public String answer(String question) throws Exception {
@@ -59,7 +80,44 @@ public abstract class AbstractRobot implements Robot, Lifecycle {
 		return answer;
 	}
 
+	@Override
+	public void start() {
+		try {
+			id = config.getRobotId();
+			analyzer = new IKAnalyzer(); // TODO: init use reflect, from config info
+			File indexDir = new File(config.getIndexPath());
+			initIndexBuilders(indexDir);
+			initSearcher(indexDir);
+			// initSessionManager
+		} catch (Exception e) {
+			throw new RobotCommonException("error while start", e);
+		}
+	}
+
+	private void initSearcher(File indexDir) throws CorruptIndexException, IOException {
+		// 如果索引文件不存在，需要先build索引，否则打开searcher会出错
+		if (!indexDir.exists() || !indexDir.isDirectory()) {
+			indexBuilder.fullBuildIndex();
+		}else{
+			indexBuilder.incrementBuildIndex();
+		}
+		searcher = new IndexSearcher(IndexReader.open(FSDirectory.open(indexDir)));
+	}
+
+	private void initIndexBuilders(File indexDir) throws InstantiationException, IllegalAccessException, Exception {
+		IndexWriterConfig indexConfig = new IndexWriterConfig(Constants.LUCENE_VERSION, analyzer);
+		indexConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);// recreate every time;
+		IndexWriter writer = new IndexWriter(FSDirectory.open(indexDir), indexConfig);
+		indexBuilder = new DefaultIndexBuilder(writer, config.getFetcher());
+	}
+
+	@Override
+	public void stop() {
+	}
+
 	/**
+	 * 尝试从缓存获取结果
+	 * 
 	 * @param context
 	 * @return
 	 */
@@ -106,10 +164,6 @@ public abstract class AbstractRobot implements Robot, Lifecycle {
 		return id;
 	}
 
-	public String getIndexPath() {
-		return PathHelper.getIndexPath(id);
-	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -133,6 +187,5 @@ public abstract class AbstractRobot implements Robot, Lifecycle {
 	public void setAnalyzer(Analyzer analyzer) {
 		this.analyzer = analyzer;
 	}
-	
 
 }

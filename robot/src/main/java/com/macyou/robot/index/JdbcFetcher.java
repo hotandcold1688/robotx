@@ -70,11 +70,6 @@ public class JdbcFetcher implements Fetcher {
 		return hasNext;
 	}
 
-	@Override
-	public void end() {
-		sqlRowSet = null; //help gc, avoid rs is big
-	}
-
 	private String getSql() {
 		return "select * from robot_knowledge where robot_id = ? order by id";
 	}
@@ -89,6 +84,11 @@ public class JdbcFetcher implements Fetcher {
 
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
+	}
+
+	@Override
+	public void stop() {
+		sqlRowSet = null; // help gc, avoid rs is big
 	}
 
 }
