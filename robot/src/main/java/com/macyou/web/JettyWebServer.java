@@ -5,6 +5,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 public class JettyWebServer {
 	public static void main(String[] args) throws Exception {
+		//System.setProperty("org.eclipse.jetty.util.URI.charset", "GBK");
 		String baseDir = System.getProperty("user.dir") + "/target/classes/webroot";
 		System.out.println("baseDir=" + baseDir);
 		Server server = new Server(8080);

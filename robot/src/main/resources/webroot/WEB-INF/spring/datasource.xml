@@ -18,4 +18,20 @@
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"/>
 
 	<context:property-placeholder location="jdbc.properties"/>
+	
+	
+	
+	<!-- IBATIS -->
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean" >
+		<property name="configLocation">
+			<value>classpath:sql-map.xml</value>
+		</property>
+		<property name="dataSource">
+			<ref local="dataSource"/>
+		</property>
+	</bean>
+
+	<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean> 
 </beans>
