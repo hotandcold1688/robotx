@@ -6,12 +6,12 @@ package com.macyou.robot.common;
  * @author zili.dengzl
  * 
  */
-public class Knowledge extends Entity {
-//	/**
-//	 * index's id
-//	 */
-//	private String indexId;
-//	public static final String INDEX_ID = "index_id";
+public class Knowledge extends Entity implements Comparable<Knowledge> {
+	// /**
+	// * index's id
+	// */
+	// private String indexId;
+	// public static final String INDEX_ID = "index_id";
 	/**
 	 * question
 	 */
@@ -33,13 +33,19 @@ public class Knowledge extends Entity {
 	private String robotId;
 	public static final String ROBOT_ID = "robot_id";
 
-//	public String getIndexId() {
-//		return indexId;
-//	}
-//
-//	public void setIndexId(String indexId) {
-//		this.indexId = indexId;
-//	}
+	/**
+	 * robotId
+	 */
+	private float similarity;
+	public static final String SIMILARITY = "similarity";
+
+	// public String getIndexId() {
+	// return indexId;
+	// }
+	//
+	// public void setIndexId(String indexId) {
+	// this.indexId = indexId;
+	// }
 
 	public String getQuestion() {
 		return question;
@@ -71,6 +77,20 @@ public class Knowledge extends Entity {
 
 	public void setRobotId(String robotId) {
 		this.robotId = robotId;
+	}
+
+	public float getSimilarity() {
+		return similarity;
+	}
+
+	public void setSimilarity(float similarity) {
+		this.similarity = similarity;
+	}
+
+	@Override
+	public int compareTo(Knowledge o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	public static enum ContentType {

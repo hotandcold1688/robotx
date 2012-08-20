@@ -75,7 +75,7 @@ public abstract class AbstractRobot implements Robot {
 		// 通过lucene搜索
 		TopFieldDocs docs = searcher.search(query, filter, config.getTopHitsNum(), config.getSort());
 		// 计算相似度,拼装结果
-		answer = getAnswer(docs);
+		answer = getAnswer(query,docs);
 
 		return answer;
 	}
@@ -142,11 +142,12 @@ public abstract class AbstractRobot implements Robot {
 
 	/**
 	 * 1.计算相似度 2.选择最佳答案,拼装返回结果
+	 * @param query 
 	 * 
 	 * @param docs
 	 * @return
 	 */
-	protected abstract String getAnswer(TopFieldDocs docs) throws Exception;
+	protected abstract String getAnswer(Query query, TopFieldDocs docs) throws Exception;
 
 	/**
 	 * @param context

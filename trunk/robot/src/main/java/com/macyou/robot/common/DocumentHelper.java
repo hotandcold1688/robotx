@@ -13,15 +13,17 @@ public class DocumentHelper {
 
 	public static Document toDocument(Knowledge knowledge) {
 		Document doc = new Document();
-		doc.add(new Field(Knowledge.ID, String.valueOf(knowledge.getId()), Field.Store.YES,
-				Field.Index.NOT_ANALYZED));
+		doc.add(new Field(Knowledge.ID, String.valueOf(knowledge.getId()), Field.Store.YES, Field.Index.NOT_ANALYZED));
 		doc.add(new Field(Knowledge.QUESTION, knowledge.getQuestion(), Field.Store.YES, Field.Index.ANALYZED));
 		doc.add(new Field(Knowledge.ANSWER, knowledge.getAnswer(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 		return doc;
 	}
 
 	public static Knowledge fromDocument(Document document) {
-		return null;
+		Knowledge k = new Knowledge();
+		k.setQuestion(document.getFieldable(Knowledge.QUESTION).stringValue());
+		k.setAnswer(document.getFieldable(Knowledge.ANSWER).stringValue());
+		return k;
 	}
 
 }
