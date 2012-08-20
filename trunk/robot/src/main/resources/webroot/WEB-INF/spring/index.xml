@@ -9,4 +9,6 @@
 	default-autowire="byName">
 
 	<bean class="com.macyou.robot.common.SpringBeanGetter"></bean>
+	
+	<bean id="knowledgeAdminService" class="com.macyou.admin.KnowledgeAdminServiceImpl"/>
 </beans>

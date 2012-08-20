@@ -14,9 +14,27 @@ public class Entity {
 	protected long id;
 	public static final String ID = "id";
 
+	/**
+	 * 
+	 */
+	protected String creator;
+	public static final String CREATOR = "creator";
+
+	/**
+	 * 
+	 */
 	protected Timestamp gmtCreate;
 	public static final String GMT_CREATE = "gmt_create";
 
+	/**
+	 * 
+	 */
+	protected String modifier;
+	public static final String MODIFIER = "modifier";
+
+	/**
+	 * 
+	 */
 	protected Timestamp gmtModified;
 	public static final String GMT_MODIFIED = "gmt_modified";
 
@@ -57,4 +75,21 @@ public class Entity {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	public String getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
+
 }

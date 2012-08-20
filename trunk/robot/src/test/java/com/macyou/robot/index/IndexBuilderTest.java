@@ -45,7 +45,7 @@ public class IndexBuilderTest {
 	@Test
 	public void testFullBuild() throws Exception {
 		indexBuilder.fullBuildIndex();
-		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, Knowledge.INDEX_ID, "1");
+		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, Knowledge.ID, "1");
 		Assert.assertEquals("a serach tool", doc.getFieldable(Knowledge.ANSWER).stringValue());
 		// indexBuilder.stop();
 	}
@@ -62,7 +62,7 @@ public class IndexBuilderTest {
 			public List<Knowledge> nextPage() {
 				List<Knowledge> list = new ArrayList<Knowledge>();
 				Knowledge k = new Knowledge();
-				k.setIndexId("1");
+				k.setId(1);
 				k.setQuestion("what's this");
 				k.setAnswer("increment build");
 				list.add(k);
@@ -77,7 +77,7 @@ public class IndexBuilderTest {
 		};
 
 		indexBuilder.incrementBuildIndex();
-		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, Knowledge.INDEX_ID, "1");
+		Document doc = SearchHelper.searchFirstDoc(INDEX_DIR, Knowledge.ID, "1");
 		Assert.assertEquals("increment build", doc.getFieldable(Knowledge.ANSWER).stringValue());
 		// indexBuilder.stop();
 	}
@@ -93,7 +93,7 @@ public class IndexBuilderTest {
 			public List<Knowledge> nextPage() {
 				List<Knowledge> list = new ArrayList<Knowledge>();
 				Knowledge k = new Knowledge();
-				k.setIndexId("1");
+				k.setId(1);
 				k.setIsDeleted("y");
 				list.add(k);
 				count++;
@@ -107,7 +107,7 @@ public class IndexBuilderTest {
 		};
 
 		indexBuilder.incrementBuildIndex();
-		int hits = SearchHelper.getSearchHits(INDEX_DIR, Knowledge.INDEX_ID, "1");
+		int hits = SearchHelper.getSearchHits(INDEX_DIR, Knowledge.ID, "1");
 		Assert.assertEquals(0, hits);
 
 	}

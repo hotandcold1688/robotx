@@ -7,11 +7,11 @@ package com.macyou.robot.common;
  * 
  */
 public class Knowledge extends Entity {
-	/**
-	 * index's id
-	 */
-	private String indexId;
-	public static final String INDEX_ID = "index_id";
+//	/**
+//	 * index's id
+//	 */
+//	private String indexId;
+//	public static final String INDEX_ID = "index_id";
 	/**
 	 * question
 	 */
@@ -33,13 +33,13 @@ public class Knowledge extends Entity {
 	private String robotId;
 	public static final String ROBOT_ID = "robot_id";
 
-	public String getIndexId() {
-		return indexId;
-	}
-
-	public void setIndexId(String indexId) {
-		this.indexId = indexId;
-	}
+//	public String getIndexId() {
+//		return indexId;
+//	}
+//
+//	public void setIndexId(String indexId) {
+//		this.indexId = indexId;
+//	}
 
 	public String getQuestion() {
 		return question;
