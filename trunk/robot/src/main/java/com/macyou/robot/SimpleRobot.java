@@ -53,4 +53,5 @@ public class SimpleRobot extends AbstractRobot {
 	public Filter getFilter(SearchContext context) {
 		return null;
 	}
+
 }

@@ -114,6 +114,15 @@ public abstract class AbstractRobot implements Robot {
 	@Override
 	public void stop() {
 	}
+	
+	
+	
+
+	@Override
+	public void refreshIndex() {
+		
+	}
+	
 
 	/**
 	 * 尝试从缓存获取结果
@@ -159,6 +168,7 @@ public abstract class AbstractRobot implements Robot {
 	 * @return
 	 */
 	protected abstract SearchContext prepareContext(String question) throws Exception;
+
 
 	public String getRobotId() {
 		return id;
