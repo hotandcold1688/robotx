@@ -64,6 +64,9 @@ public class SimpleRobot extends AbstractRobot {
 
 	}
 
+	/**
+	 * 这里只是示例一下，具体实现有待商榷，另外没有单元测试
+	 */
 	private Knowledge getFirstKnowledge(Query query, TopFieldDocs docs) throws Exception {
 		Set<Term> queryTerms = new TreeSet<Term>();
 		query.extractTerms(queryTerms); //这里用扩展Analyzer直接获得一个分词后的list是不是更好?
