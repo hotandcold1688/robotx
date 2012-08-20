@@ -45,7 +45,7 @@ public class JavaFetcher implements Fetcher {
 	private Knowledge getKnowledge(String s) {
 		Knowledge knowledge = new Knowledge();
 		String[] ss = s.split("\\|");
-		knowledge.setIndexId(ss[0]);
+		knowledge.setId(Long.valueOf(ss[0]));
 		knowledge.setQuestion(ss[1]);
 		knowledge.setAnswer(ss[2]);
 		return knowledge;

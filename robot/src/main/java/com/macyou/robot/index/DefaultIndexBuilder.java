@@ -90,14 +90,14 @@ public class DefaultIndexBuilder implements IndexBuilder {
 		try {
 			writer.addDocument(DocumentHelper.toDocument(k));
 		} catch (Exception e) {
-			logger.error(e.getMessage() + ",indexId=" + k.getIndexId(), e);
+			logger.error(e.getMessage() + ",id=" + k.getId(), e);
 		}
 	}
 
 	protected void updateOneDocument(Knowledge k) {
 		try {
 
-			Term term = new Term(Knowledge.INDEX_ID, k.getIndexId());
+			Term term = new Term(Knowledge.ID, String.valueOf(k.getId()));
 			if ("y".equalsIgnoreCase(k.getIsDeleted()))
 				writer.deleteDocuments(term);
 			else {

@@ -13,7 +13,7 @@ public class DocumentHelper {
 
 	public static Document toDocument(Knowledge knowledge) {
 		Document doc = new Document();
-		doc.add(new Field(Knowledge.INDEX_ID, String.valueOf(knowledge.getIndexId()), Field.Store.YES,
+		doc.add(new Field(Knowledge.ID, String.valueOf(knowledge.getId()), Field.Store.YES,
 				Field.Index.NOT_ANALYZED));
 		doc.add(new Field(Knowledge.QUESTION, knowledge.getQuestion(), Field.Store.YES, Field.Index.ANALYZED));
 		doc.add(new Field(Knowledge.ANSWER, knowledge.getAnswer(), Field.Store.YES, Field.Index.NOT_ANALYZED));

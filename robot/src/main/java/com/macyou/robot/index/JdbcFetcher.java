@@ -73,7 +73,7 @@ public class JdbcFetcher implements Fetcher {
 		k.setGmtCreate(rs.getTimestamp(Knowledge.GMT_CREATE));
 		k.setGmtModified(rs.getTimestamp(Knowledge.GMT_MODIFIED));
 		k.setIsDeleted(rs.getString(Knowledge.IS_DELETED));
-		k.setIndexId(rs.getString(Knowledge.INDEX_ID));
+		//k.setIndexId(rs.getString(Knowledge.INDEX_ID));
 		k.setQuestion(rs.getString(Knowledge.QUESTION));
 		k.setAnswer(rs.getString(Knowledge.ANSWER));
 		k.setContentType(Knowledge.ContentType.valueOf(rs.getString(Knowledge.CONTENT_TYPE)));
