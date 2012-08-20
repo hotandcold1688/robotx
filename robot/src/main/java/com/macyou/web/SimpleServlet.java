@@ -20,28 +20,16 @@ public class SimpleServlet extends HttpServlet {
 	private RobotManager robotManager;
 
 	public void init(ServletConfig config) throws ServletException {
+		initWhileNoSpringContext();
+	}
+
+	private void initWhileNoSpringContext() {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("webroot/WEB-INF/spring/robot.xml");
 
 		robotManager = new RobotManager();
 		// start
 		robotManager.createRobot("robot1");
 	}
-
-	// private void buildIndexInJava() {
-	// Robot robot = robotManager.getRobot("robot1");
-	// Analyzer analyzer = new IKAnalyzer(true);
-	// DefaultIndexBuilderFactory factory = new DefaultIndexBuilderFactory(robot.getIndexPath());
-	// factory.setAnalyzer(analyzer);
-	// JavaFetcher fetcher = new JavaFetcher();
-	// fetcher.setSource(SimpleData.knowledges);
-	// factory.setFetcher(fetcher);
-	// IndexBuilder builder;
-	// try {
-	// builder = factory.getIndexBuilder(IndexBuilderFactory.IndexType.FULL);
-	// builder.buildIndex();
-	// } catch (Exception e) {
-	// }
-	// }
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setContentType("text/html; charset=GBK");
@@ -50,7 +38,7 @@ public class SimpleServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=GBK\"><title>chat-debug</title></head><body>");
-		sb.append("<form action=/robot.htm target=selfframe method=post />");
+		sb.append("<form action=/robot.do target=selfframe method=post />");
 		sb.append("scenceCode:<input name=robotId type=text maxLength=14 value=robot1 style='width:100px' />");
 		sb.append("<br>问题：<input name=question type=text maxLength=25 style='width:450px' />");
 		sb.append("<input type=submit value='提交' /></br></form>");

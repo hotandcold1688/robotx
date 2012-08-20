@@ -8,15 +8,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.macyou.robot.config.RobotConfig;
 import com.macyou.robot.index.Fetcher;
-import com.macyou.robot.index.JavaFetcher;
 import com.macyou.robot.index.JdbcFetcher;
 import com.macyou.robot.lifecycle.Lifecycle;
-import com.macyou.web.SimpleData;
 
 /**
  * robot 的初始化发生在服务启动，或者加入新的robot的时候,get的过程中不触发robot的初始化
  * 
- * 1.robot的容器 2.调用robot的start
+ * 1.robot的容器
+ * 2.调用robot的start
  * 
  * @author zili.dengzl
  * @time 2012-8-16 上午11:16:17
@@ -39,8 +38,8 @@ public class RobotManager implements Lifecycle {
 		// TODO : get info from DB,reflect create robot
 		RobotConfig config = new RobotConfig();
 		config.setIndexPath(INDEX_DIR + robotId);
-		JavaFetcher fetcher = new JavaFetcher(SimpleData.knowledges);
-		//Fetcher fetcher = new JdbcFetcher(robotId);
+		//JavaFetcher fetcher = new JavaFetcher(SimpleData.knowledges);
+		Fetcher fetcher = new JdbcFetcher(robotId);
 		config.setFetcher(fetcher);
 		Robot robot = new SimpleRobot(config);
 		robot.start();
@@ -56,15 +55,12 @@ public class RobotManager implements Lifecycle {
 		return robot;
 	}
 
-	public void setRobotMap(ConcurrentHashMap<String, Robot> robotMap) {
-		this.robotMap = robotMap;
-	}
-
 	@Override
 	public void start() {
-		for (Robot robot : listAllRobot()) {
-			robot.start();
-		}
+		createRobot("robot1");
+//		for (Robot robot : listAllRobot()) {
+//			robot.start();
+//		}
 	}
 
 	@Override

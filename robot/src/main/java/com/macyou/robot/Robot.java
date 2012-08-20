@@ -26,4 +26,6 @@ public interface Robot extends Lifecycle {
 	public Analyzer getAnalyzer();
 
 	public IndexSearcher getSearcher();
+	
+	public void refreshIndex();
 }
