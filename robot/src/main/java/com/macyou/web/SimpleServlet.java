@@ -14,10 +14,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.macyou.robot.Robot;
 import com.macyou.robot.RobotManager;
+import com.macyou.robot.common.StringUtils;
+import com.macyou.robot.context.SearchContext;
+import com.macyou.robot.exception.RobotCommonException;
+import com.macyou.robot.session.SessionManager;
 
 public class SimpleServlet extends HttpServlet {
+	private static final String SESSION_NAME = "sessionName";
 	private static final long serialVersionUID = 3290498972143257177L;
 	private RobotManager robotManager;
+	CookieUtil cookieUtil = new CookieUtil();
 
 	public void init(ServletConfig config) throws ServletException {
 		initWhileNoSpringContext();
@@ -53,15 +59,10 @@ public class SimpleServlet extends HttpServlet {
 		res.setContentType("text/html; charset=GBK");
 		res.setCharacterEncoding("GBK");
 		req.setCharacterEncoding("GBK");
-		String question = req.getParameter("question");
-		String robotId = req.getParameter("robotId");
+
 		PrintWriter out = res.getWriter();
 		try {
-			Robot robot = robotManager.getRobot(robotId);
-			if (null == robot) {
-				// TODO: DEFALUT ROBOT
-			}
-			String answer = robot.answer(question);
+			String answer = search(req, res);
 			out.print(answer);
 		} catch (Exception e) {
 			out.print("error:");
@@ -72,6 +73,32 @@ public class SimpleServlet extends HttpServlet {
 			out.close();
 			return;
 		}
+	}
+
+	private String search(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		String robotId = req.getParameter("robotId");
+		Robot robot = robotManager.getRobot(robotId);
+		if (null == robot) {
+			// TODO: DEFALUT ROBOT
+		}
+		SearchContext context = prepareContext(req);
+		String answer = robot.answer(context);
+		if (null != context.getSessionId()) {
+			cookieUtil.setToCookie(res, SessionManager.SESSION_COOKIE_NAME, context.getSessionId());
+		}
+		return answer;
+	}
+
+	public SearchContext prepareContext(HttpServletRequest req) throws Exception {
+		String question = req.getParameter("question");
+		if (StringUtils.isEmpty(question)) {
+			throw new RobotCommonException("queryAnswer error,question is null");
+		}
+		SearchContext context = new SearchContext();
+		context.setQuestion(question);
+		String sessionId = cookieUtil.getFromCookie(req, SessionManager.SESSION_COOKIE_NAME);
+		context.setSessionId(sessionId);
+		return context;
 	}
 
 	public void setRobotManager(RobotManager robotManager) {
