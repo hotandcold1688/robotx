@@ -3,6 +3,10 @@ package com.macyou.web;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+/**
+ * @author zili.dengzl
+ *
+ */
 public class JettyWebServer {
 	public static void main(String[] args) throws Exception {
 		//System.setProperty("org.eclipse.jetty.util.URI.charset", "GBK");

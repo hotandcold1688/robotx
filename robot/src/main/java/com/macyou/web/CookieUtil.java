@@ -4,6 +4,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author zili.dengzl
+ *
+ */
 public class CookieUtil {
 	static String domain = " "; // 能否重request或者response中取得
 
@@ -30,7 +34,7 @@ public class CookieUtil {
 	public void setToCookie(HttpServletResponse response, String name, String value) {
 		// 加密value？
 		Cookie cookie = new Cookie(name, value);
-		cookie.setDomain(domain);
+		//cookie.setDomain(domain);
 		cookie.setPath("/");
 		cookie.setMaxAge(-1);
 

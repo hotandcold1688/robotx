@@ -3,6 +3,8 @@
  */
 package com.macyou.robot.session;
 
+import java.sql.Timestamp;
+
 /**
  * @author zili.dengzl
  * @time 2012-8-15 下午4:55:07
@@ -12,20 +14,20 @@ public interface Session {
 
 	public String getId();
 
-	public long getCreateTime();
+	public Timestamp getCreateTime();
 
-	public long getLastAccessedTime();
+	public Timestamp getLastAccessedTime();
 
-	public void setMaxInactiveInterval(int interval);
+	public void setLastAccessedTime(Timestamp time);
 
 	public int getMaxInactiveInterval();
+
+	public void setMaxInactiveInterval(int interval);
 
 	public Object getAttribute(String name);
 
 	public void setAttribute(String name, Object value);
 
 	public void removeAttribute(String name);
-
-	public boolean isNew();
 
 }
