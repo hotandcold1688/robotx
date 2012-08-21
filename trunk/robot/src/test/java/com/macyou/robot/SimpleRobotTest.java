@@ -16,7 +16,10 @@ import org.junit.Test;
 
 import com.macyou.robot.common.Constants;
 import com.macyou.robot.common.Knowledge;
+import com.macyou.robot.common.StringUtils;
 import com.macyou.robot.config.RobotConfig;
+import com.macyou.robot.context.SearchContext;
+import com.macyou.robot.exception.RobotCommonException;
 import com.macyou.robot.index.JavaFetcher;
 
 /**
@@ -26,7 +29,7 @@ import com.macyou.robot.index.JavaFetcher;
  */
 public class SimpleRobotTest {
 	static String INDEX_DIR = "target/lucene/index/SimpleRobotTest/";
-	static SimpleRobot simpleRobot;
+	static SimpleRobotMock simpleRobot;
 
 	@BeforeClass
 	// 有对象初始化前运行一次的方法么(不要静态的)
@@ -36,7 +39,7 @@ public class SimpleRobotTest {
 		JavaFetcher fetcher = new JavaFetcher(TestData.knowledges);
 		config.setFetcher(fetcher);
 
-		simpleRobot = new SimpleRobot(config);
+		simpleRobot = new SimpleRobotMock(config);
 		simpleRobot.start();
 	}
 
@@ -104,4 +107,21 @@ public class SimpleRobotTest {
 		// return docs.totalHits;
 		// }
 	}
+}
+
+class SimpleRobotMock extends SimpleRobot{
+
+	public SimpleRobotMock(RobotConfig config) {
+		super(config);
+	}
+	
+	public String answer(String question) throws Exception{
+		if (StringUtils.isEmpty(question)) {
+			throw new RobotCommonException("queryAnswer error,question is null");
+		}
+		SearchContext context = new SearchContext();
+		context.setQuestion(question);
+		return super.answer(context);
+	}
+	
 }

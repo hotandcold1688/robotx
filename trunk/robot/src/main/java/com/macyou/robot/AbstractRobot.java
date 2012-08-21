@@ -6,6 +6,8 @@ package com.macyou.robot;
 import java.io.File;
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
@@ -24,6 +26,7 @@ import com.macyou.robot.context.SearchContext;
 import com.macyou.robot.exception.RobotCommonException;
 import com.macyou.robot.index.DefaultIndexBuilder;
 import com.macyou.robot.index.IndexBuilder;
+import com.macyou.robot.session.Session;
 import com.macyou.robot.session.SessionManager;
 
 /**
@@ -52,11 +55,9 @@ public abstract class AbstractRobot implements Robot {
 		super();
 		this.config = config;
 	}
-
+	
 	@Override
-	public String answer(String question) throws Exception {
-		// 准备查询上下文，包括session的处理
-		SearchContext context = prepareContext(question);
+	public String answer(SearchContext context) throws Exception {
 
 		// 尝试从cache中获取结果
 		String answer = getAnswerFromCache(context);
@@ -75,7 +76,7 @@ public abstract class AbstractRobot implements Robot {
 		// 通过lucene搜索
 		TopFieldDocs docs = searcher.search(query, filter, config.getTopHitsNum(), config.getSort());
 		// 计算相似度,拼装结果
-		answer = getAnswer(query,docs);
+		answer = getAnswer(query, docs);
 
 		return answer;
 	}
@@ -89,6 +90,7 @@ public abstract class AbstractRobot implements Robot {
 			initIndexBuilders(indexDir);
 			initSearcher(indexDir);
 			// initSessionManager
+			doStart();
 		} catch (Exception e) {
 			throw new RobotCommonException("error while start", e);
 		}
@@ -98,7 +100,7 @@ public abstract class AbstractRobot implements Robot {
 		// 如果索引文件不存在，需要先build索引，否则打开searcher会出错
 		if (!indexDir.exists() || !indexDir.isDirectory()) {
 			indexBuilder.fullBuildIndex();
-		}else{
+		} else {
 			indexBuilder.incrementBuildIndex();
 		}
 		searcher = new IndexSearcher(IndexReader.open(FSDirectory.open(indexDir)));
@@ -114,15 +116,11 @@ public abstract class AbstractRobot implements Robot {
 	@Override
 	public void stop() {
 	}
-	
-	
-	
 
 	@Override
 	public void refreshIndex() {
-		
+
 	}
-	
 
 	/**
 	 * 尝试从缓存获取结果
@@ -142,7 +140,8 @@ public abstract class AbstractRobot implements Robot {
 
 	/**
 	 * 1.计算相似度 2.选择最佳答案,拼装返回结果
-	 * @param query 
+	 * 
+	 * @param query
 	 * 
 	 * @param docs
 	 * @return
@@ -162,14 +161,9 @@ public abstract class AbstractRobot implements Robot {
 	protected abstract Query getQuery(SearchContext context) throws Exception;
 
 	/**
-	 * 准备查询上下文，包括session的处理
 	 * 
-	 * @param question
-	 * @param sceneId
-	 * @return
 	 */
-	protected abstract SearchContext prepareContext(String question) throws Exception;
-
+	protected abstract void doStart();
 
 	public String getRobotId() {
 		return id;

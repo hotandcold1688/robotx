@@ -17,28 +17,18 @@ import org.apache.lucene.search.TopFieldDocs;
 import com.macyou.robot.common.Constants;
 import com.macyou.robot.common.DocumentHelper;
 import com.macyou.robot.common.Knowledge;
-import com.macyou.robot.common.StringUtils;
 import com.macyou.robot.config.RobotConfig;
 import com.macyou.robot.context.SearchContext;
-import com.macyou.robot.exception.RobotCommonException;
 import com.macyou.robot.similarity.SimilarityCalculator;
 
 public class SimpleRobot extends AbstractRobot {
 	protected SimilarityCalculator similarityCalculator;
-	protected QueryParser parser = new QueryParser(Constants.LUCENE_VERSION, Knowledge.QUESTION, analyzer);
+	protected QueryParser parser;
 
 	public SimpleRobot(RobotConfig config) {
 		super(config);
 	}
 
-	public SearchContext prepareContext(String question) throws Exception {
-		if (StringUtils.isEmpty(question)) {
-			throw new RobotCommonException("queryAnswer error,question is null");
-		}
-		SearchContext context = new SearchContext();
-		context.setQuestion(question);
-		return context;
-	}
 
 	public Query getQuery(SearchContext context) throws Exception {
 		Query query = parser.parse(context.getQuestion());
@@ -69,7 +59,7 @@ public class SimpleRobot extends AbstractRobot {
 	 */
 	private Knowledge getFirstKnowledge(Query query, TopFieldDocs docs) throws Exception {
 		Set<Term> queryTerms = new TreeSet<Term>();
-		query.extractTerms(queryTerms); //这里用扩展Analyzer直接获得一个分词后的list是不是更好?
+		query.extractTerms(queryTerms); // 这里用扩展Analyzer直接获得一个分词后的list是不是更好?
 		Term[] queryTermArrsy = queryTerms.toArray(new Term[queryTerms.size()]);
 		List<Knowledge> knowledgeList = new ArrayList<Knowledge>();
 		for (ScoreDoc sd : docs.scoreDocs) {
@@ -101,6 +91,12 @@ public class SimpleRobot extends AbstractRobot {
 
 	public Filter getFilter(SearchContext context) {
 		return null;
+	}
+
+	@Override
+	protected void doStart() {
+		parser = new QueryParser(Constants.LUCENE_VERSION, Knowledge.QUESTION, analyzer);
+		// similarityCalculator = null;
 	}
 
 }

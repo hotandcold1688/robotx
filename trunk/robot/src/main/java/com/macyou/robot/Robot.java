@@ -3,6 +3,7 @@ package com.macyou.robot;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.IndexSearcher;
 
+import com.macyou.robot.context.SearchContext;
 import com.macyou.robot.lifecycle.Lifecycle;
 
 /**
@@ -11,6 +12,7 @@ import com.macyou.robot.lifecycle.Lifecycle;
  * 
  */
 public interface Robot extends Lifecycle {
+
 	/**
 	 * TODO:是否需要将answer先抽象威结构化数据返回，比如Class Answer
 	 * 
@@ -19,13 +21,13 @@ public interface Robot extends Lifecycle {
 	 * @return
 	 * @throws Exception
 	 */
-	public String answer(String question) throws Exception;
+	public String answer(SearchContext ctx) throws Exception;
 
 	public String getRobotId();
 
 	public Analyzer getAnalyzer();
 
 	public IndexSearcher getSearcher();
-	
+
 	public void refreshIndex();
 }
