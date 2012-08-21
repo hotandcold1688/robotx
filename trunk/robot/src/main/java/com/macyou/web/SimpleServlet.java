@@ -20,7 +20,6 @@ import com.macyou.robot.exception.RobotCommonException;
 import com.macyou.robot.session.SessionManager;
 
 public class SimpleServlet extends HttpServlet {
-	private static final String SESSION_NAME = "sessionName";
 	private static final long serialVersionUID = 3290498972143257177L;
 	private RobotManager robotManager;
 	CookieUtil cookieUtil = new CookieUtil();
@@ -62,6 +61,7 @@ public class SimpleServlet extends HttpServlet {
 
 		PrintWriter out = res.getWriter();
 		try {
+			System.out.println(req.getServerName());
 			String answer = search(req, res);
 			out.print(answer);
 		} catch (Exception e) {
