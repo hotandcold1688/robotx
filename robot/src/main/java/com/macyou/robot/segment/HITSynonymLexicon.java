@@ -14,7 +14,7 @@ import com.macyou.robot.util.TextFileUtil;
 public class HITSynonymLexicon extends AbstractSynonymLexicon {
     private static final Log log = LogFactory.getLog(HITSynonymLexicon.class);
 
-    private String           hitLexiconFile="D:/robotx/robot/src/main/resources/synonym.txt";
+    private String           hitLexiconFile="src/main/resources/synonym.txt";
 
     public synchronized void init() {
         if (this.hitLexiconFile == null)
