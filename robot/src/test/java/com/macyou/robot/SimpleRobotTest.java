@@ -42,10 +42,12 @@ public class SimpleRobotTest {
 		simpleRobot = new SimpleRobotMock(config);
 		simpleRobot.start();
 	}
+	
+	
 
 	@Test
 	public void testAnswer() throws Exception {
-		Assert.assertEquals("你好", simpleRobot.answer("你好"));
+		Assert.assertEquals("你好", simpleRobot.answer("你好你是谁你多少了"));
 		Assert.assertEquals("我是机器人小邓", simpleRobot.answer("你是谁"));
 		Assert.assertEquals("56个名族", simpleRobot.answer("中国有多少个名族"));
 
@@ -79,6 +81,11 @@ public class SimpleRobotTest {
 	@Test
 	public void testAnswer_samilarity6() throws Exception {
 		Assert.assertEquals("很热啊", simpleRobot.answer("天气不错"));
+	}
+	
+	@Test
+	public void testAnswer7() throws Exception {
+		Assert.assertEquals("恭喜你妹", simpleRobot.answer("恭贺你"));
 	}
 
 	static class SearchHelper {
