@@ -1,7 +1,6 @@
 package com.macyou.robot.util;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -105,7 +104,7 @@ public class WordsSimpleConverter {
 	}
 	
 	public static void main(String[] args){
-		System.out.println(new WordsSimpleConverter("D:/robotx/robot/src/main/resources/simple_conplex.txt").convert("誰 ｊｌｋｊｌｋｊｌＡＢＤＷＥＲ．／：ａ"));		
+		System.out.println(new WordsSimpleConverter("src/main/resources/simple_conplex.txt").convert("誰 ｊｌｋｊｌｋｊｌＡＢＤＷＥＲ．／：ａ"));		
 	}
 
 }
