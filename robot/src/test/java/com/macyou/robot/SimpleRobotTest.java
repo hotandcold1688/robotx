@@ -50,7 +50,7 @@ public class SimpleRobotTest {
 		Assert.assertEquals("你好", simpleRobot.answer("你好你是谁你多少了"));
 		Assert.assertEquals("我是机器人小邓", simpleRobot.answer("你是谁"));
 		Assert.assertEquals("56个名族", simpleRobot.answer("中国有多少个名族"));
-
+		Assert.assertEquals("BHBBHB", simpleRobot.answer("１２３１２３，１２３"));
 	}
 
 	@Test
