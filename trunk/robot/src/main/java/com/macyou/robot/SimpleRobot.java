@@ -55,7 +55,7 @@ public class SimpleRobot extends AbstractRobot {
 				}
 				searchWords.add(words[i].trim());
 			}
-		 BooleanQuery query      = new BooleanQuery();
+		 BooleanQuery query = new BooleanQuery();
 		 Set<String> addedTerms = new HashSet<String>();
 		  for (String word : searchWords) {
 	            if (StringUtils.isEmpty(word))

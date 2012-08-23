@@ -98,7 +98,7 @@ public class WordsSimpleConverter {
 	public String convert(String arg){
 		if (arg == null) return "";
 		arg = toSimple(arg);
-		arg = toDBC(arg);
+//		arg = toDBC(arg);
 		arg = arg.toLowerCase();
 		return arg;
 	}
