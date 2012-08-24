@@ -28,12 +28,12 @@ public class HITGroups extends ArrayList<String>{
 		return null;
 	}
 	
-	public String toString(){
-		StringBuffer sb = new StringBuffer();
-		for(String word:this){
-			sb.append(word + " ");
-		}
-		return sb.toString().trim();
-	}
+	public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (String word : this) {
+            sb.append(word).append(" ");
+        }
+        return sb.toString().trim();
+    }
 
 }
