@@ -30,6 +30,9 @@ import com.macyou.robot.segment.SynonymLexicon;
 import com.macyou.robot.similarity.SimilarityCalculator;
 import com.macyou.robot.util.WordsSimpleConverter;
 
+/**
+ * @author BHB
+ */
 public class SimpleRobot extends AbstractRobot {
 	protected SimilarityCalculator similarityCalculator;
 	protected QueryParser parser;
@@ -49,12 +52,12 @@ public class SimpleRobot extends AbstractRobot {
 		 Query tempQuery=parser.parse(question);
 		 String[]  words=tempQuery.toString().split("question:");
 		 List<String> searchWords=new ArrayList<String>();
-		 for(int i=0;i<words.length;i++){
-				if(StringUtils.isEmpty(words[i])){
-					continue;
-				}
-				searchWords.add(words[i].trim());
-			}
+        for (String queryWord : words) {
+            if (StringUtils.isEmpty(queryWord)) {
+                continue;
+            }
+            searchWords.add(queryWord.trim());
+        }
 		 BooleanQuery query = new BooleanQuery();
 		 Set<String> addedTerms = new HashSet<String>();
 		  for (String word : searchWords) {
@@ -126,7 +129,8 @@ public class SimpleRobot extends AbstractRobot {
 	
 	private static void handleSynonymLexicon(SynonymLexicon synonymLexicon,BooleanQuery query, String word,Set<String> addedTerms) {
 		String field=Knowledge.QUESTION;
-		if (synonymLexicon == null && !addedTerms.contains(word)) {// 1.1词直接加入lunce的查询
+        //TODO 这里的逻辑有点问题else之后synonymLexicon一样可能为null
+		if (synonymLexicon == null && !addedTerms.contains(word)) {// 1.1词直接加入lucene的查询
 			TermQuery tq = new TermQuery(new Term(field, word));
 			query.add(tq, Occur.SHOULD);
 			addedTerms.add(word);
@@ -140,15 +144,14 @@ public class SimpleRobot extends AbstractRobot {
 				}
 			} else {
 				BooleanQuery posQuery = new BooleanQuery();
-				for (int i = 0; i < groups.size(); i++) {
-					String groupId = groups.get(i);
-					SynonymGroup group=synonymLexicon.getSynonymGroupById(groupId);
-					 String[] words=group.getWords();
-					 for(int j=0;j<words.length;j++){
-						 TermQuery tq = new TermQuery(new Term(field, words[j]));
-						 posQuery.add(tq, Occur.SHOULD);
-					 }
-				}
+                for (String groupId : groups) {
+                    SynonymGroup group = synonymLexicon.getSynonymGroupById(groupId);
+                    String[] words = group.getWords();
+                    for (String synonymWord : words) {
+                        TermQuery tq = new TermQuery(new Term(field, synonymWord));
+                        posQuery.add(tq, Occur.SHOULD);
+                    }
+                }
 				query.add(posQuery, Occur.SHOULD);
 			}
 		}
