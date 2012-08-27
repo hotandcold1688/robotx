@@ -24,8 +24,8 @@ import com.macyou.robot.common.DocumentHelper;
 import com.macyou.robot.common.Knowledge;
 import com.macyou.robot.config.RobotConfig;
 import com.macyou.robot.context.SearchContext;
+import com.macyou.robot.segment.HITSynonymGroup;
 import com.macyou.robot.segment.HITSynonymLexicon;
-import com.macyou.robot.segment.SynonymGroup;
 import com.macyou.robot.segment.SynonymLexicon;
 import com.macyou.robot.similarity.SimilarityCalculator;
 import com.macyou.robot.util.WordsSimpleConverter;
@@ -145,7 +145,7 @@ public class SimpleRobot extends AbstractRobot {
 			} else {
 				BooleanQuery posQuery = new BooleanQuery();
                 for (String groupId : groups) {
-                    SynonymGroup group = synonymLexicon.getSynonymGroupById(groupId);
+                	HITSynonymGroup group = synonymLexicon.getSynonymGroupById(groupId);
                     String[] words = group.getWords();
                     for (String synonymWord : words) {
                         TermQuery tq = new TermQuery(new Term(field, synonymWord));
