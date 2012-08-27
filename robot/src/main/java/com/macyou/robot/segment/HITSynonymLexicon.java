@@ -3,19 +3,27 @@ package com.macyou.robot.segment;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.macyou.robot.util.TextFileUtil;
 
-public class HITSynonymLexicon extends AbstractSynonymLexicon {
+public class HITSynonymLexicon implements  SynonymLexicon {
     private static final Log log = LogFactory.getLog(HITSynonymLexicon.class);
 
     private String           hitLexiconFile="src/main/resources/synonym.txt";
+    protected DataStruct         data        = new DataStruct();
+    protected DataStruct         new_data;
 
+    
+    
     public synchronized void init() {
         if (this.hitLexiconFile == null)
             return;
@@ -42,6 +50,72 @@ public class HITSynonymLexicon extends AbstractSynonymLexicon {
     }
     
     
+    
+    private class DataStruct {
+        private Map<String, HITSynonymGroup> idGroupMap   = new HashMap<String, HITSynonymGroup>();
+        private Map<String, ArrayList<String>>    wordGroupMap = new HashMap<String, ArrayList<String>>();
+        public Map<String, HITSynonymGroup> getIdGroupMap() {
+            return idGroupMap;
+        }
+        public Map<String, ArrayList<String>> getWordGroupMap() {
+            return wordGroupMap;
+        }
+    }
+    
+
+
+    public Set<String> listAllGroupIds() {
+        return data.getIdGroupMap().keySet();
+    }
+
+    public List<String> getSynonymGroupsIdByWord(String word) {
+        if (!isLegality(word))
+            return null;
+        return data.getWordGroupMap().get(word);
+    }
+
+    public HITSynonymGroup getSynonymGroupById(String groupId) {
+        return data.getIdGroupMap().get(groupId);
+    }
+
+    public List<HITSynonymGroup> getSynonymGroupsByWord(String word) {
+        if (!isLegality(word))
+            return null;
+        List<String> groupsId = this.getSynonymGroupsIdByWord(word);
+        if (groupsId == null)
+            return null;
+        List<HITSynonymGroup> groups = new LinkedList<HITSynonymGroup>();
+        for (String id : groupsId) {
+        	HITSynonymGroup group = this.getSynonymGroupById(id);
+            if (group != null)
+                groups.add(group);
+        }
+        return groups.isEmpty() ? null : groups;
+    }
+
+    public void addSynonymGroup(HITSynonymGroup synonymGroup) {
+       addSynonymGroup(synonymGroup, data.getIdGroupMap(), data.getWordGroupMap());
+    }
+
+    public void addSynonymGroup(HITSynonymGroup synonymGroup, Map<String, HITSynonymGroup> idMap,
+                                Map<String, ArrayList<String>> wordMap) {
+        String id = synonymGroup.getGroupId();
+        if (idMap.containsKey(id)) {
+            return;
+        }
+        idMap.put(id, synonymGroup);
+        String[] words = synonymGroup.getWords();
+        for (String word : words) {
+        	ArrayList<String> groups = wordMap.get(word);
+            if (groups == null) {
+                groups = new ArrayList<String>();
+                wordMap.put(word, groups);
+            }
+            groups.add(id);
+        }
+    }
+
+
 
     public boolean isLegality(String word) {
         char[] chrs = word.toCharArray();
@@ -52,68 +126,7 @@ public class HITSynonymLexicon extends AbstractSynonymLexicon {
         return false;
     }
 
-    static public void loadHIT(SortedMap<String, SynonymGroup> newidGroupMap,
-                               SortedMap<String, HITGroups> newWordGroupMap, String lexiconFile)
-            throws IOException {
-        if (lexiconFile == null)
-            return;
-        List<String> lines = TextFileUtil.readLines(new FileInputStream(lexiconFile));
-        if (lines != null) {
 
-            for (String line : lines) {
-                if (line.trim().length() == 0)
-                    continue;
-                String[] array = line.split("\\s+");
-                if (array.length < 2)
-                    continue;
-                String groupId = array[0];
-                HITSynonymGroup group = new HITSynonymGroup(groupId, array, 1);
-                addSynonymGroup(group, newidGroupMap, newWordGroupMap);
-            }
-        }
-    }
-
-    static public synchronized void addSynonymGroup(SynonymGroup synonymGroup,
-                                                    SortedMap<String, SynonymGroup> newidGroupMap,
-                                                    SortedMap<String, HITGroups> newwordGroupMap) {
-        String id = synonymGroup.getGroupId();
-        if (newidGroupMap.containsKey(id)) {
-            return;
-        }
-        newidGroupMap.put(id, synonymGroup);
-        String[] words = synonymGroup.getWords();
-        for (String word : words) {
-            HITGroups groups = newwordGroupMap.get(word);
-            if (groups == null) {
-                groups = new HITGroups();
-                newwordGroupMap.put(word, groups);
-            }
-            groups.add(id);
-        }
-    }
-
-    public short getSynonymLevel(String word1, String word2) {
-        if (word1.equals(word2)) {
-            return SynonymLevelConfig.LEVEL_EQUALS;
-        }
-        HITGroups groups1 = data.getWordGroupMap().get(word1);
-        HITGroups groups2 = data.getWordGroupMap().get(word2);
-        if (groups1 == null || groups2 == null) {
-            return SynonymLevelConfig.LEVEL_NONSYNONYM;
-        }
-        short maxLevel = SynonymLevelConfig.LEVEL_NONSYNONYM;
-        for (String group1 : groups1) {
-            for (String group2 : groups2) {
-                short level = SynonymLevelUtil.getSynonymLevelFromGroupId(group1, group2);
-                if (level > maxLevel) {
-                    maxLevel = level;
-                }
-                if (maxLevel == SynonymLevelConfig.LEVEL_ABSOLUTE)
-                    return maxLevel;
-            }
-        }
-        return maxLevel;
-    }
 
     public String getHitLexiconFile() {
         return hitLexiconFile;
@@ -123,7 +136,4 @@ public class HITSynonymLexicon extends AbstractSynonymLexicon {
         this.hitLexiconFile = hitLexiconFile;
     }
 
-    public static void main(String[] args) {
-    	new HITSynonymLexicon().init();
-	}
 }

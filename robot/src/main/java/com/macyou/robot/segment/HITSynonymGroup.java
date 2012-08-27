@@ -1,7 +1,9 @@
 package com.macyou.robot.segment;
 
+import java.io.Serializable;
 
-public class HITSynonymGroup implements SynonymGroup{
+
+public class HITSynonymGroup implements Serializable{
 
 	private static final long serialVersionUID = 5363762438606262208L;
 	
@@ -29,7 +31,6 @@ public class HITSynonymGroup implements SynonymGroup{
 		this(null, null);
 	}
 
-	@Override
 	public boolean contains(String word) {
 		for(String term:words){
 			if(term.equals(word))
@@ -38,22 +39,18 @@ public class HITSynonymGroup implements SynonymGroup{
 		return false;
 	}
 
-	@Override
 	public String getGroupId() {
 		return this.groupId;
 	}
 
-	@Override
 	public String[] getWords() {
 		return this.words;
 	}
 
-	@Override
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
 
-	@Override
 	public void setWords(String[] words) {
 		this.words = words;
 	}
