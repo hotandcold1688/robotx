@@ -1,0 +1,14 @@
+<html>
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>insert</title>
+  </head>
+  <body>
+<form action="insert.htm" method="post">
+  <p>question: <input type="text" name="question" /></p>
+  <p>Answer: <input type="text" name="answer" /></p>
+  <input type="submit" value="Submit" />
+</form>
+
+  </body>
+</html>
