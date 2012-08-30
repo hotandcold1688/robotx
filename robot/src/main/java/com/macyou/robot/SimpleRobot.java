@@ -161,7 +161,7 @@ public class SimpleRobot extends AbstractRobot {
 	protected void doStart() {
 		parser = new QueryParser(Constants.LUCENE_VERSION, Knowledge.QUESTION, analyzer);
 		synonym.init();
-		convertUtil=new WordsSimpleConverter("src/main/resources/simple_conplex.txt");
+		convertUtil=new WordsSimpleConverter("simple_conplex.txt");
 		// similarityCalculator = null;
 	}
 

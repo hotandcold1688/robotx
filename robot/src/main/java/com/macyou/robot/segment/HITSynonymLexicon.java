@@ -18,7 +18,7 @@ import com.macyou.robot.util.TextFileUtil;
 public class HITSynonymLexicon implements  SynonymLexicon {
     private static final Log log = LogFactory.getLog(HITSynonymLexicon.class);
 
-    private String           hitLexiconFile="src/main/resources/synonym.txt";
+    private String           hitLexiconFile="synonym.txt";
     protected DataStruct         data        = new DataStruct();
     protected DataStruct         new_data;
 
@@ -29,7 +29,8 @@ public class HITSynonymLexicon implements  SynonymLexicon {
             return;
         List<String> lines = null;
         try {
-            lines = TextFileUtil.readLines(new FileInputStream(this.hitLexiconFile));
+        	;
+            lines = TextFileUtil.readLines(HITSynonymLexicon.class.getClassLoader().getResourceAsStream(hitLexiconFile));
         } catch (FileNotFoundException e) {
             log.error(this.hitLexiconFile, e);
         } catch (IOException e) {
