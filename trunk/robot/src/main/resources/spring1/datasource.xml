@@ -17,14 +17,14 @@
 	</bean>
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"/>
 
-	<context:property-placeholder location="jdbc.properties"/>
+	<context:property-placeholder location="classpath:spring/jdbc.properties"/>
 	
 	
 	
 	<!-- IBATIS -->
 	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean" >
 		<property name="configLocation">
-			<value>classpath:sql-map-config.xml</value>
+			<value>classpath:spring/sql-map-config.xml</value>
 		</property>
 	</bean>
 

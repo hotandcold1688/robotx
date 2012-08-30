@@ -17,6 +17,6 @@
 	</bean>
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"/>
 
-	<context:property-placeholder location="jdbc.properties"/>
+	<context:property-placeholder location="classpath:spring/jdbc.properties"/>
 
 </beans>

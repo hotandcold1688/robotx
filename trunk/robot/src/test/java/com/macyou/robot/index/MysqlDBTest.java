@@ -22,7 +22,7 @@ public class MysqlDBTest {
 		Connection conn = null;
 
 		Class.forName("org.gjt.mm.mysql.Driver");
-		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "123456");
+		conn = DriverManager.getConnection("jdbc:mysql://10.16.28.36:3306/test", "root", "123456");
 
 		String sql = "delete from  robot_knowledge where id = 9999999";
 		ps = conn.prepareStatement(sql);
