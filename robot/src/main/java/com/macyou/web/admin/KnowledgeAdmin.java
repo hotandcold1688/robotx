@@ -1,8 +1,5 @@
 package com.macyou.web.admin;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -45,12 +42,4 @@ public class KnowledgeAdmin {
 		return "admin/knowledge/insert";
 	}
 
-	public static void main(String[] args) {
-		try {
-			System.out.println(URLDecoder.decode("%26%2320154%3B%26%2327665%3B", "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }
