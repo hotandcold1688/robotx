@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="GBK" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="ROBOT_KNOWLEDGE">
+	<insert id="INSERT" parameterClass="com.macyou.robot.common.Knowledge">
+	<![CDATA[
+		INSERT INTO robot_knowledge
+		  (GMT_CREATE,
+		   CREATOR,
+		   GMT_MODIFIED,
+		   MODIFIER,
+		   IS_DELETED,
+		   INDEX_ID,
+		   QUESTION,
+		   ANSWER,
+		   CONTENT_TYPE,
+		   ROBOT_ID)
+		VALUES
+		  (sysdate(),
+		   #creator#,
+		   sysdate(),
+		   #modifier#,
+		   'n',
+		   null,
+		   #question#,
+		   #answer#,
+		   #contentType#,
+		   #robotId#);
+	]]>
+	</insert>
+</sqlMap>
