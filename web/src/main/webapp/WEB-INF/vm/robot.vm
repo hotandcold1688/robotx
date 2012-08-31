@@ -1,0 +1,22 @@
+<html>
+<head>
+
+	<title>chat-debug</title>
+</head>
+
+<body>
+<form action=/robot.htm  method=post />
+scenceCode:<input name=robotId type=text maxLength=14 value=robot1 style='width:100px' />
+<br>
+	问题：<input name=question type=text maxLength=25 style='width:450px' />
+       <input type=submit value='提交' />
+</br>
+</form>
+
+<div>
+	答案: $!{answer} 
+</div>
+		
+</body>
+
+</html>
