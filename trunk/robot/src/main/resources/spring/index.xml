@@ -11,8 +11,7 @@
 	<bean class="com.macyou.robot.common.SpringBeanGetter"></bean>
 	
 	<bean id="knowledgeAdminService" class="com.macyou.admin.KnowledgeAdminServiceImpl"/>
-	<!--		
+		
 	<bean id="robotManager" class="com.macyou.robot.RobotManager" init-method="start" />
-	-->
 
 </beans>

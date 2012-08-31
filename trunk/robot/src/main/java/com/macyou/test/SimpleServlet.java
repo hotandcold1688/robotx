@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -18,9 +19,14 @@ import com.macyou.robot.common.StringUtils;
 import com.macyou.robot.context.SearchContext;
 import com.macyou.robot.exception.RobotCommonException;
 import com.macyou.robot.session.SessionManager;
-
+/**
+ * 
+ * debug use
+ *
+ */
 public class SimpleServlet extends HttpServlet {
 	private static final long serialVersionUID = 3290498972143257177L;
+	@Autowired
 	private RobotManager robotManager;
 	CookieUtil cookieUtil = new CookieUtil();
 

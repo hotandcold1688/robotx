@@ -21,6 +21,12 @@
 
 	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
 		<property name="resourceLoaderPath" value="/WEB-INF/vm/"/>
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+			</props>
+		</property>
 	</bean>
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
